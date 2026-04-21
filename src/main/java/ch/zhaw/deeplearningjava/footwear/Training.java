@@ -12,6 +12,10 @@
  */
 package ch.zhaw.deeplearningjava.footwear;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import ai.djl.Model;
 import ai.djl.basicdataset.cv.classification.ImageFolder;
 import ai.djl.metric.Metrics;
@@ -28,10 +32,6 @@ import ai.djl.training.evaluator.Accuracy;
 import ai.djl.training.listener.TrainingListener;
 import ai.djl.training.loss.Loss;
 import ai.djl.translate.TranslateException;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * In training, multiple passes (or epochs) are made over the training data
@@ -56,7 +56,7 @@ public final class Training {
 
         // create ImageFolder dataset from directory
         // ImageFolder dataset = initDataset("ut-zap50k-images-square");
-        ImageFolder dataset = initDataset("ut-zap50k-images-square-small");
+        ImageFolder dataset = initDataset("ut-zap50k-images-square");
         // Split the dataset set into training dataset and validate dataset
         RandomAccessDataset[] datasets = dataset.randomSplit(8, 2);
 
