@@ -1,0 +1,843 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x000000014b8ecda8, pid=5332, tid=4611
+#
+# JRE version: Java(TM) SE Runtime Environment (25.0.1+8) (build 25.0.1+8-LTS-27)
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (25.0.1+8-LTS-27, mixed mode, sharing, tiered, compressed oops, compressed class ptrs, g1 gc, bsd-aarch64)
+# Problematic frame:
+# C  [libtorch_cpu.dylib+0x14da8]  at::accelerator::getAccelerator(bool)+0x30
+#
+# No core dump will be written. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+#
+# If you would like to submit a bug report, please visit:
+#   https://bugreport.java.com/bugreport/crash.jsp
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -XX:+ShowCodeDetailsInExceptionMessages ch.zhaw.deeplearningjava.footwear.Training
+
+Host: "Mac15,9" arm64, 16 cores, 48G, Darwin 25.3.0, macOS 26.3 (25D125)
+Time: Tue Apr 21 20:10:59 2026 CEST elapsed time: 909.821637 seconds (0d 0h 15m 9s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000000101345220):  JavaThread "main"      [_thread_in_native, id=4611, stack(0x000000016f07c000,0x000000016f27f000) (2060K)]
+
+Stack: [0x000000016f07c000,0x000000016f27f000],  sp=0x000000016f27d5e0,  free space=2053k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [libtorch_cpu.dylib+0x14da8]  at::accelerator::getAccelerator(bool)+0x30
+C  [libtorch_cpu.dylib+0x43e3ecc]  torch::autograd::Engine::evaluate_function(std::__1::shared_ptr<torch::autograd::GraphTask>&, torch::autograd::Node*, torch::autograd::InputBuffer&, std::__1::shared_ptr<torch::autograd::ReadyQueue> const&)+0x188c
+C  [libtorch_cpu.dylib+0x43deda4]  torch::autograd::Engine::thread_main(std::__1::shared_ptr<torch::autograd::GraphTask> const&)+0x384
+C  [libtorch_cpu.dylib+0x43de2dc]  torch::autograd::Engine::execute_with_graph_task(std::__1::shared_ptr<torch::autograd::GraphTask> const&, std::__1::shared_ptr<torch::autograd::Node>, torch::autograd::InputBuffer&&)+0x1d4
+C  [libtorch_cpu.dylib+0x43dd898]  torch::autograd::Engine::execute(std::__1::vector<torch::autograd::Edge, std::__1::allocator<torch::autograd::Edge>> const&, std::__1::vector<at::Tensor, std::__1::allocator<at::Tensor>> const&, bool, bool, bool, std::__1::vector<torch::autograd::Edge, std::__1::allocator<torch::autograd::Edge>> const&)+0x790
+C  [libtorch_cpu.dylib+0x43ccdf0]  torch::autograd::run_backward(std::__1::vector<at::Tensor, std::__1::allocator<at::Tensor>> const&, std::__1::vector<at::Tensor, std::__1::allocator<at::Tensor>> const&, bool, bool, std::__1::vector<at::Tensor, std::__1::allocator<at::Tensor>> const&, bool, bool)+0x344
+C  [libtorch_cpu.dylib+0x43cc304]  torch::autograd::backward(std::__1::vector<at::Tensor, std::__1::allocator<at::Tensor>> const&, std::__1::vector<at::Tensor, std::__1::allocator<at::Tensor>> const&, std::__1::optional<bool>, bool, std::__1::vector<at::Tensor, std::__1::allocator<at::Tensor>> const&)+0x60
+C  [libtorch_cpu.dylib+0x4420e24]  torch::autograd::VariableHooks::_backward(at::Tensor const&, c10::ArrayRef<at::Tensor>, std::__1::optional<at::Tensor> const&, std::__1::optional<bool>, bool) const+0xdc
+C  [0.36.0-libdjl_torch.dylib+0x7ac6c]  at::Tensor::backward(at::Tensor const&, std::__1::optional<bool>, bool, std::__1::optional<c10::ArrayRef<at::Tensor>>) const+0x150
+C  [0.36.0-libdjl_torch.dylib+0x7a990]  Java_ai_djl_pytorch_jni_PyTorchLibrary_torchBackward+0x94
+J 3190  ai.djl.pytorch.jni.PyTorchLibrary.torchBackward(JJZZ)V (0 bytes) @ 0x00000001262d6f98 [0x00000001262d6f00+0x0000000000000098]
+J 3481 c1 ai.djl.pytorch.jni.JniUtils.backward(Lai/djl/pytorch/engine/PtNDArray;Lai/djl/pytorch/engine/PtNDArray;ZZ)V (29 bytes) @ 0x000000011ea54cfc [0x000000011ea54800+0x00000000000004fc]
+J 3623 c1 ai.djl.pytorch.engine.PtGradientCollector.backward(Lai/djl/ndarray/NDArray;)V (45 bytes) @ 0x000000011ea7eac0 [0x000000011ea7df40+0x0000000000000b80]
+J 3471 c1 ai.djl.training.EasyTrain.trainSplit(Lai/djl/training/Trainer;Lai/djl/training/GradientCollector;Lai/djl/training/listener/TrainingListener$BatchData;Lai/djl/training/dataset/Batch;)Z (123 bytes) @ 0x000000011ea4d790 [0x000000011ea4d540+0x0000000000000250]
+J 3464 c1 ai.djl.training.EasyTrain.trainBatch(Lai/djl/training/Trainer;Lai/djl/training/dataset/Batch;)V (288 bytes) @ 0x000000011ea4f4c8 [0x000000011ea4e7c0+0x0000000000000d08]
+j  ai.djl.training.EasyTrain.fit(Lai/djl/training/Trainer;ILai/djl/training/dataset/Dataset;Lai/djl/training/dataset/Dataset;)V+46
+j  ch.zhaw.deeplearningjava.footwear.Training.main([Ljava/lang/String;)V+130
+v  ~StubRoutines::call_stub 0x0000000125a60154
+V  [libjvm.dylib+0x4d1e5c]  JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*)+0x3e0
+V  [libjvm.dylib+0x553748]  jni_invoke_static(JNIEnv_*, JavaValue*, _jobject*, JNICallType, _jmethodID*, JNI_ArgumentPusher*, JavaThread*)+0x174
+V  [libjvm.dylib+0x556da8]  jni_CallStaticVoidMethod+0xe4
+C  [libjli.dylib+0xac68]  JavaMain+0x918
+C  [libjli.dylib+0xd744]  ThreadJavaMain+0xc
+C  [libsystem_pthread.dylib+0x6c08]  _pthread_start+0x88
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+J 3190  ai.djl.pytorch.jni.PyTorchLibrary.torchBackward(JJZZ)V (0 bytes) @ 0x00000001262d6f68 [0x00000001262d6f00+0x0000000000000068]
+J 3481 c1 ai.djl.pytorch.jni.JniUtils.backward(Lai/djl/pytorch/engine/PtNDArray;Lai/djl/pytorch/engine/PtNDArray;ZZ)V (29 bytes) @ 0x000000011ea54cfc [0x000000011ea54800+0x00000000000004fc]
+J 3623 c1 ai.djl.pytorch.engine.PtGradientCollector.backward(Lai/djl/ndarray/NDArray;)V (45 bytes) @ 0x000000011ea7eac0 [0x000000011ea7df40+0x0000000000000b80]
+J 3471 c1 ai.djl.training.EasyTrain.trainSplit(Lai/djl/training/Trainer;Lai/djl/training/GradientCollector;Lai/djl/training/listener/TrainingListener$BatchData;Lai/djl/training/dataset/Batch;)Z (123 bytes) @ 0x000000011ea4d790 [0x000000011ea4d540+0x0000000000000250]
+J 3464 c1 ai.djl.training.EasyTrain.trainBatch(Lai/djl/training/Trainer;Lai/djl/training/dataset/Batch;)V (288 bytes) @ 0x000000011ea4f4c8 [0x000000011ea4e7c0+0x0000000000000d08]
+j  ai.djl.training.EasyTrain.fit(Lai/djl/training/Trainer;ILai/djl/training/dataset/Dataset;Lai/djl/training/dataset/Dataset;)V+46
+j  ch.zhaw.deeplearningjava.footwear.Training.main([Ljava/lang/String;)V+130
+v  ~StubRoutines::call_stub 0x0000000125a60154
+
+siginfo: si_signo: 11 (SIGSEGV), si_code: 2 (SEGV_ACCERR), si_addr: 0x0000000000000000
+
+Registers:
+ x0=0x0000000000000000  x1=0x00000001529cd770  x2=0x0000000000000000  x3=0x0000000100fe3b40
+ x4=0x000000010dfdf420  x5=0x0000000000000000  x6=0xffffffffbfc007ff  x7=0xfffff0003ffff800
+ x8=0x0000000152c5d000  x9=0x0000000000000000 x10=0x0000000000000002 x11=0x0000000000000001
+x12=0x000000000024b150 x13=0x356ef0bc6a7bf703 x14=0x000000010dcb7058 x15=0x0000000835358000
+x16=0x000000010df3bcdc x17=0x000000049724b150 x18=0x0000000000000000 x19=0x0000000000000000
+x20=0x0000000000000000 x21=0x0000000836408780 x22=0x0000000836cc1200 x23=0x0000000000000003
+x24=0x0000000835359410 x25=0x000000083465e420 x26=0x0000000000000000 x27=0x000000010dfdf420
+x28=0x000000084ec2f778  fp=0x000000016f27d630  lr=0x000000014b8ecda8  sp=0x000000016f27d5e0
+pc=0x000000014b8ecda8 cpsr=0x0000000060001000
+
+Register to memory mapping:
+
+x0 =0x0 is null
+x1 =0x00000001529cd770: _ZTINSt3__119basic_ostringstreamIcNS_11char_traitsIcEENS_9allocatorIcEEEE+0x20 in /Users/hatembenbelgacem/.djl.ai/pytorch/2.7.1-cpu-osx-aarch64/libtorch_cpu.dylib at 0x000000014b8d8000
+x2 =0x0 is null
+x3 =0x0000000100fe3b40 points into unknown readable memory: 0x001c0004372dc160 | 60 c1 2d 37 04 00 1c 00
+x4 =0x000000010dfdf420: _ZN3c1019UndefinedTensorImpl10_singletonE+0 in /Users/hatembenbelgacem/.djl.ai/pytorch/2.7.1-cpu-osx-aarch64/libc10.dylib at 0x000000010df2c000
+x5 =0x0 is null
+x6 =0xffffffffbfc007ff is an unknown value
+x7 =0xfffff0003ffff800 is an unknown value
+x8 =0x0000000152c5d000: _ZN2at8autocast12_GLOBAL__N_147TORCH_LIBRARY_IMPL_static_init___AutocastXPU_10E+0 in /Users/hatembenbelgacem/.djl.ai/pytorch/2.7.1-cpu-osx-aarch64/libtorch_cpu.dylib at 0x000000014b8d8000
+x9 =0x0 is null
+x10=0x0000000000000002 is an unknown value
+x11=0x0000000000000001 is an unknown value
+x12=0x000000000024b150 is an unknown value
+x13=0x356ef0bc6a7bf703 is an unknown value
+x14=0x000000010dcb7058 points into unknown readable memory: 0x5249824b0099f950 | 50 f9 99 00 4b 82 49 52
+x15=0x0000000835358000 points into unknown readable memory: 0x356ef0bc6a7be313 | 13 e3 7b 6a bc f0 6e 35
+x16=0x000000010df3bcdc: _ZN3c1033is_privateuse1_backend_registeredEv+0 in /Users/hatembenbelgacem/.djl.ai/pytorch/2.7.1-cpu-osx-aarch64/libc10.dylib at 0x000000010df2c000
+x17=0x000000049724b150 is an unknown value
+x18=0x0 is null
+x19=0x0 is null
+x20=0x0 is null
+x21=0x0000000836408780 points into unknown readable memory: 0x0000000152b07dc8 | c8 7d b0 52 01 00 00 00
+x22=0x0000000836cc1200 points into unknown readable memory: 0x0000000836408780 | 80 87 40 36 08 00 00 00
+x23=0x0000000000000003 is an unknown value
+x24=0x0000000835359410 points into unknown readable memory: 0x000000010dfdf420 | 20 f4 fd 0d 01 00 00 00
+x25=0x000000083465e420 points into unknown readable memory: 0x000000083cbc7540 | 40 75 bc 3c 08 00 00 00
+x26=0x0 is null
+x27=0x000000010dfdf420: _ZN3c1019UndefinedTensorImpl10_singletonE+0 in /Users/hatembenbelgacem/.djl.ai/pytorch/2.7.1-cpu-osx-aarch64/libc10.dylib at 0x000000010df2c000
+x28=0x000000084ec2f778 points into unknown readable memory: 0x000000083c9b6270 | 70 62 9b 3c 08 00 00 00
+ fp=0x000000016f27d630 is pointing into the stack for thread: 0x0000000101345220
+ lr=0x000000014b8ecda8: _ZN2at11accelerator14getAcceleratorEb+0x30 in /Users/hatembenbelgacem/.djl.ai/pytorch/2.7.1-cpu-osx-aarch64/libtorch_cpu.dylib at 0x000000014b8d8000
+ sp=0x000000016f27d5e0 is pointing into the stack for thread: 0x0000000101345220
+
+Top of Stack: (sp=0x000000016f27d5e0)
+0x000000016f27d5e0:   000000016f27d630 000000014b907218   0.'o.....r.K....
+0x000000016f27d5f0:   0000000000000000 000000083465e420   ........ .e4....
+0x000000016f27d600:   0000000835359410 0000000000000003   ..55............
+0x000000016f27d610:   0000000836cc1200 0000000836408780   ...6......@6....
+0x000000016f27d620:   0000000000000000 0000000836cc1200   ...........6....
+0x000000016f27d630:   000000016f27da40 000000014fcbbecc   @.'o.......O....
+0x000000016f27d640:   000000016f27ff00 000000016f27d8c8   ..'o......'o....
+0x000000016f27d650:   000000084ec2f738 0000000152cf0238   8..N....8..R....
+0x000000016f27d660:   000000084ec2fa30 000000083cce8020   0..N.... ..<....
+0x000000016f27d670:   000000084ec2f820 000000084ec2f718    ..N.......N....
+0x000000016f27d680:   0000000834473800 000000016f27dba8   .8G4......'o....
+0x000000016f27d690:   0000000000000000 0000000000000000   ................
+0x000000016f27d6a0:   0000000000000000 0000000000000000   ................
+0x000000016f27d6b0:   0000000000000000 0000000000000000   ................
+0x000000016f27d6c0:   0000000000000000 0000000000000000   ................
+0x000000016f27d6d0:   0000000000000000 0000000000000000   ................
+0x000000016f27d6e0:   0000000000000000 0000000000000000   ................
+0x000000016f27d6f0:   0000000000000000 0000000000000000   ................
+0x000000016f27d700:   0000000000000000 0000000000000000   ................
+0x000000016f27d710:   0000000000000000 000000083cce8bb8   ...........<....
+0x000000016f27d720:   0000000000000008 000000016f27d768   ........h.'o....
+0x000000016f27d730:   0000000000000000 000000083cce8d00   ...........<....
+0x000000016f27d740:   0000000000000009 000000016f27d788   ..........'o....
+0x000000016f27d750:   000000083cce8dd0 000000083cce8cf0   ...<.......<....
+0x000000016f27d760:   000000016f27d830 000000014bbb1b58   0.'o....X..K....
+0x000000016f27d770:   0000000000000000 000000016f27d788   ..........'o....
+0x000000016f27d780:   0000000400000000 000000010dfdf420   ........ .......
+0x000000016f27d790:   0000000834938f00 000000010dfdf420   ...4.... .......
+0x000000016f27d7a0:   000000083465e420 000000083465e438    .e4....8.e4....
+0x000000016f27d7b0:   000000083465e438 5702dfcaceb100b7   8.e4...........W
+0x000000016f27d7c0:   0000000000000000 0000000000000001   ................
+0x000000016f27d7d0:   0000000800000000 5702dfcaceb100b7   ...............W
+
+Instructions: (pc=0x000000014b8ecda8)
+  0x000000014b8ecca8:   f6 57 4b a9 ff 83 03 91 c0 03 5f d6 06 14 63 95
+  0x000000014b8eccb8:   35 c9 ff 97 34 c9 ff 97 f3 03 00 aa 0e 00 00 14
+  0x000000014b8eccc8:   f3 03 00 aa e0 0f 40 f9 e8 03 00 91 1f 00 08 eb
+  0x000000014b8eccd8:   81 00 00 54 88 00 80 52 e0 03 00 91 03 00 00 14
+  0x000000014b8ecce8:   a0 00 00 b4 a8 00 80 52 09 00 40 f9 28 79 68 f8
+  0x000000014b8eccf8:   00 01 3f d6 e0 83 00 91 03 00 00 94 e0 03 13 aa
+  0x000000014b8ecd08:   94 0d 63 95 f4 4f be a9 fd 7b 01 a9 fd 43 00 91
+  0x000000014b8ecd18:   f3 03 00 aa 00 30 40 f9 7f 32 00 f9 60 00 00 b4
+  0x000000014b8ecd28:   68 36 40 f9 00 01 3f d6 69 02 01 91 60 2e 40 f9
+  0x000000014b8ecd38:   1f 00 09 eb 80 00 00 54 00 01 00 b4 a8 00 80 52
+  0x000000014b8ecd48:   03 00 00 14 88 00 80 52 e0 03 09 aa 09 00 40 f9
+  0x000000014b8ecd58:   28 79 68 f8 00 01 3f d6 e0 03 13 aa fd 7b 41 a9
+  0x000000014b8ecd68:   f4 4f c2 a8 c0 03 5f d6 07 c9 ff 97 c0 03 5f d6
+  0x000000014b8ecd78:   ff 83 01 d1 f6 57 03 a9 f4 4f 04 a9 fd 7b 05 a9
+  0x000000014b8ecd88:   fd 43 01 91 f3 03 00 aa b6 0e 63 95 60 00 00 34
+  0x000000014b8ecd98:   88 22 80 52 36 00 00 14 79 ef ff 97 8c 8c 05 94
+=>0x000000014b8ecda8:   08 00 40 f9 08 41 40 f9 00 01 3f d6 60 00 00 34
+  0x000000014b8ecdb8:   68 22 80 52 2e 00 00 14 ff 33 00 79 42 7f 05 94
+  0x000000014b8ecdc8:   08 00 40 f9 08 09 40 f9 00 01 3f d6 f4 03 00 aa
+  0x000000014b8ecdd8:   15 00 80 52 80 00 00 34 28 20 80 52 e8 33 00 79
+  0x000000014b8ecde8:   35 00 80 52 14 91 05 94 08 00 40 f9 08 09 40 f9
+  0x000000014b8ecdf8:   00 01 3f d6 a0 00 00 34 d4 05 00 35 88 21 80 52
+  0x000000014b8ece08:   e8 33 00 79 35 00 80 52 e6 82 05 94 08 00 40 f9
+  0x000000014b8ece18:   08 09 40 f9 00 01 3f d6 a0 00 00 34 f5 06 00 35
+  0x000000014b8ece28:   c8 20 80 52 e8 33 00 79 35 00 80 52 39 88 05 94
+  0x000000014b8ece38:   08 00 40 f9 08 09 40 f9 00 01 3f d6 a0 00 00 34
+  0x000000014b8ece48:   15 08 00 35 a8 21 80 52 e8 33 00 79 35 00 80 52
+  0x000000014b8ece58:   3c 84 05 94 08 00 40 f9 08 09 40 f9 00 01 3f d6
+  0x000000014b8ece68:   40 01 00 34 35 09 00 35 e8 21 80 52 e8 33 00 79
+  0x000000014b8ece78:   e0 33 40 79 fd 7b 45 a9 f4 4f 44 a9 f6 57 43 a9
+  0x000000014b8ece88:   ff 83 01 91 c0 03 5f d6 55 ff ff 35 33 ff ff 34
+  0x000000014b8ece98:   c0 42 03 d0 00 94 0c 91 c1 42 03 d0 21 d0 0c 91
+
+
+Stack slot to memory mapping:
+
+stack at sp + 0 slots: 0x000000016f27d630 is pointing into the stack for thread: 0x0000000101345220
+stack at sp + 1 slots: 0x000000014b907218: _ZNSt3__16vectorIN2at6TensorENS_9allocatorIS2_EEEC1Em+0x40 in /Users/hatembenbelgacem/.djl.ai/pytorch/2.7.1-cpu-osx-aarch64/libtorch_cpu.dylib at 0x000000014b8d8000
+stack at sp + 2 slots: 0x0 is null
+stack at sp + 3 slots: 0x000000083465e420 points into unknown readable memory: 0x000000083cbc7540 | 40 75 bc 3c 08 00 00 00
+stack at sp + 4 slots: 0x0000000835359410 points into unknown readable memory: 0x000000010dfdf420 | 20 f4 fd 0d 01 00 00 00
+stack at sp + 5 slots: 0x0000000000000003 is an unknown value
+stack at sp + 6 slots: 0x0000000836cc1200 points into unknown readable memory: 0x0000000836408780 | 80 87 40 36 08 00 00 00
+stack at sp + 7 slots: 0x0000000836408780 points into unknown readable memory: 0x0000000152b07dc8 | c8 7d b0 52 01 00 00 00
+
+Lock stack of current Java thread (top to bottom):
+
+
+Compiled method (n/a) 909833 3190     n 0       ai.djl.pytorch.jni.PyTorchLibrary::torchBackward (native)
+ total in heap  [0x00000001262d6e08,0x00000001262d7040] = 568
+ main code      [0x00000001262d6f00,0x00000001262d7038] = 312
+ oops           [0x00000001262d7038,0x00000001262d7040] = 8
+ mutable data [0x0000000834a63c80,0x0000000834a63c98] = 24
+ relocation     [0x0000000834a63c80,0x0000000834a63c98] = 24
+
+[Constant Pool (empty)]
+
+[MachCode]
+[Entry Point]
+  # {method} {0x000000013a55fd08} 'torchBackward' '(JJZZ)V' in 'ai/djl/pytorch/jni/PyTorchLibrary'
+  # this:     c_rarg1:c_rarg1 
+                        = 'ai/djl/pytorch/jni/PyTorchLibrary'
+  # parm0:    c_rarg2:c_rarg2 
+                        = long
+  # parm1:    c_rarg3:c_rarg3 
+                        = long
+  # parm2:    c_rarg4   = boolean
+  # parm3:    c_rarg5   = boolean
+  #           [sp+0x60]  (sp of caller)
+  0x00000001262d6f00: 1f20 03d5 | 2808 40b9 | 2a09 40b9 | 1f01 0a6b | 4000 0054 
+
+  0x00000001262d6f14: ;   {runtime_call Shared Runtime ic_miss_blob}
+  0x00000001262d6f14: 3b11 df17 
+[Verified Entry Point]
+  0x00000001262d6f18: 1f20 03d5 | e953 40d1 | 3f01 00f9 | fd7b bfa9 | fd03 0091 | ff43 01d1 | 2801 0018 | 8923 40b9 
+  0x00000001262d6f38: 1f01 09eb | e000 0054 
+
+  0x00000001262d6f40: ;   {runtime_call Stub::method_entry_barrier}
+  0x00000001262d6f40: 0830 88d2 | 48b5 a4f2 | 2800 c0f2 | 0001 3fd6 | 0200 0014 | 0100 0000 | e103 00f9 | 3f00 1feb 
+  0x00000001262d6f60: e103 00d1 | e103 819a | 0800 0010 | 880b 02f9 | e803 0091 | 8807 02f9 | 80a3 1091 | e803 7eb2 
+  0x00000001262d6f80: 89d3 1291 | 28fd 9f88 
+
+  0x00000001262d6f88: ;   {runtime_call Java_ai_djl_pytorch_jni_PyTorchLibrary_torchBackward}
+  0x00000001262d6f88: 881f 8dd2 | c8c5 a1f2 | 2800 c0f2 | 0001 3fd6 | a800 80d2 | 88b7 04b9 | bf3b 03d5 | 8817 40f9 
+  0x00000001262d6fa8: bf03 08eb | a803 0054 | 88b3 44b9 | 6803 0035 | e803 7db2 | 89d3 1291 | 28fd 9f88 | 88c3 5439 
+  0x00000001262d6fc8: 1f09 0071 | 0002 0054 | 9f07 02f9 | 9f0b 02f9 | 824f 42f9 | 5f80 00f9 | bf03 0091 | fd7b c1a8 
+  0x00000001262d6fe8: 8817 40f9 
+
+  0x00000001262d6fec: ;   {poll_return}
+  0x00000001262d6fec: 8800 0036 
+
+  0x00000001262d6ff0: ;   {internal_word}
+  0x00000001262d6ff0: e8ff ff10 | 8863 02f9 
+
+  0x00000001262d6ff8: ;   {runtime_call SafepointBlob}
+  0x00000001262d6ff8: 2217 df17 | 8807 40f9 | 4800 00b5 | c003 5fd6 
+
+  0x00000001262d7008: ;   {runtime_call Stub::forward_exception}
+  0x00000001262d7008: 1e24 de17 
+
+  0x00000001262d700c: ;   {runtime_call SharedRuntime::reguard_yellow_pages()}
+  0x00000001262d700c: 88e4 84d2 | 28e4 a1f2 | 2800 c0f2 | 0001 3fd6 | edff ff17 | e003 1caa 
+
+  0x00000001262d7024: ;   {runtime_call JavaThread::check_special_condition_for_native_trans(JavaThread*)}
+  0x00000001262d7024: 88a8 86d2 | a8db a1f2 | 2800 c0f2 | 0001 3fd6 | e1ff ff17 
+[/MachCode]
+
+
+Compiled method (c1) 909835 3481       3       ai.djl.pytorch.jni.JniUtils::backward (29 bytes)
+ total in heap  [0x000000011ea54708,0x000000011ea54e48] = 1856
+ main code      [0x000000011ea54800,0x000000011ea54d88] = 1416
+ stub code      [0x000000011ea54d88,0x000000011ea54e38] = 176
+ oops           [0x000000011ea54e38,0x000000011ea54e48] = 16
+ mutable data [0x00000008454a8380,0x00000008454a8458] = 216
+ relocation     [0x00000008454a8380,0x00000008454a8418] = 152
+ metadata       [0x00000008454a8418,0x00000008454a8458] = 64
+ immutable data [0x0000000834722d00,0x0000000834722e68] = 360
+ dependencies   [0x0000000834722d00,0x0000000834722d08] = 8
+ nul chk table  [0x0000000834722d08,0x0000000834722d30] = 40
+ scopes pcs     [0x0000000834722d30,0x0000000834722df0] = 192
+ scopes data    [0x0000000834722df0,0x0000000834722e68] = 120
+
+[Constant Pool (empty)]
+
+[MachCode]
+[Verified Entry Point]
+  # {method} {0x000000013a553e90} 'backward' '(Lai/djl/pytorch/engine/PtNDArray;Lai/djl/pytorch/engine/PtNDArray;ZZ)V' in 'ai/djl/pytorch/jni/JniUtils'
+  # parm0:    c_rarg1:c_rarg1 
+                        = 'ai/djl/pytorch/engine/PtNDArray'
+  # parm1:    c_rarg2:c_rarg2 
+                        = 'ai/djl/pytorch/engine/PtNDArray'
+  # parm2:    c_rarg3   = boolean
+  # parm3:    c_rarg4   = boolean
+  #           [sp+0x80]  (sp of caller)
+  0x000000011ea54800: 1f20 03d5 | e953 40d1 | 3f01 00f9 | ff03 02d1 | fd7b 07a9 | 2801 0018 | 8923 40b9 | 1f01 09eb 
+  0x000000011ea54820: e000 0054 
+
+  0x000000011ea54824: ;   {runtime_call Stub::method_entry_barrier}
+  0x000000011ea54824: 0830 88d2 | 48b5 a4f2 | 2800 c0f2 | 0001 3fd6 | 0200 0014 | 0100 0000 | fd03 02aa 
+
+  0x000000011ea54840: ;   {metadata(method data for {method} {0x000000013a553e90} 'backward' '(Lai/djl/pytorch/engine/PtNDArray;Lai/djl/pytorch/engine/PtNDArray;ZZ)V' in 'ai/djl/pytorch/jni/JniUtils')}
+  0x000000011ea54840: 006d 8bd2 | 204d a7f2 | 2000 c0f2 | 0290 40b9 | 4208 0011 | 0290 00b9 | 4224 1f12 | 5f00 0071 
+  0x000000011ea54860: 0026 0054 | e313 0b29 
+
+  0x000000011ea54868: ; implicit exception: dispatches to 0x000000011ea54d40
+  0x000000011ea54868: 3f00 40f9 | e003 01aa 
+
+  0x000000011ea54870: ;   {metadata(method data for {method} {0x000000013a553e90} 'backward' '(Lai/djl/pytorch/engine/PtNDArray;Lai/djl/pytorch/engine/PtNDArray;ZZ)V' in 'ai/djl/pytorch/jni/JniUtils')}
+  0x000000011ea54870: 026d 8bd2 | 224d a7f2 | 2200 c0f2 | 0008 40b9 | 0004 53d2 | 4870 40f9 | 1f00 08eb | a100 0054 
+  0x000000011ea54890: 4874 40f9 | 0805 0091 | 4874 00f9 | 1700 0014 | 4878 40f9 | 1f00 08eb | a100 0054 | 487c 40f9 
+  0x000000011ea548b0: 0805 0091 | 487c 00f9 | 1000 0014 | 4870 40f9 | a800 00b5 | 4070 00f9 | e803 40b2 | 4874 00f9 
+  0x000000011ea548d0: 0a00 0014 | 4878 40f9 | a800 00b5 | 4078 00f9 | e803 40b2 | 487c 00f9 | 0400 0014 | 486c 40f9 
+  0x000000011ea548f0: 0805 0091 | 486c 00f9 
+
+  0x000000011ea548f8: ; ImmutableOopMap {rfp=Oop }
+                      ;*invokevirtual getHandle {reexecute=0 rethrow=0 return_oop=0}
+                      ; - ai.djl.pytorch.jni.JniUtils::backward@4 (line 1777)
+                      ;   {optimized virtual_call}
+  0x000000011ea548f8: 3a88 df95 
+
+  0x000000011ea548fc: ;   {post_call_nop}
+  0x000000011ea548fc: 1f20 03d5 | 9f3e 80f2 | 1f00 80f2 
+
+  0x000000011ea54908: ;   {metadata(method data for {method} {0x000000013a553e90} 'backward' '(Lai/djl/pytorch/engine/PtNDArray;Lai/djl/pytorch/engine/PtNDArray;ZZ)V' in 'ai/djl/pytorch/jni/JniUtils')}
+  0x000000011ea54908: 036d 8bd2 | 234d a7f2 | 2300 c0f2 | a000 00b5 | 6804 4439 | 0801 40b2 | 6804 0439 | 2800 0014 
+  0x000000011ea54928: 0208 40b9 | 4204 53d2 | 6888 40f9 | 5f00 08eb | a100 0054 | 688c 40f9 | 0805 0091 | 688c 00f9 
+  0x000000011ea54948: 1700 0014 | 6890 40f9 | 5f00 08eb | a100 0054 | 6894 40f9 | 0805 0091 | 6894 00f9 | 1000 0014 
+  0x000000011ea54968: 6888 40f9 | a800 00b5 | 6288 00f9 | e803 40b2 | 688c 00f9 | 0a00 0014 | 6890 40f9 | a800 00b5 
+  0x000000011ea54988: 6290 00f9 | e803 40b2 | 6894 00f9 | 0400 0014 | 6884 40f9 | 0805 0091 | 6884 00f9 
+
+  0x000000011ea549a4: ;   {metadata('java/lang/Long')}
+  0x000000011ea549a4: 0255 89d2 | 4203 a0f2 | 0200 ccf2 | 0808 40b9 | 0805 53d2 | 1f01 02eb | 411c 0054 | 0100 0014 
+  0x000000011ea549c4: e103 00aa 
+
+  0x000000011ea549c8: ; implicit exception: dispatches to 0x000000011ea54d4c
+  0x000000011ea549c8: 3f00 40f9 | e003 01aa 
+
+  0x000000011ea549d0: ;   {metadata(method data for {method} {0x000000013a553e90} 'backward' '(Lai/djl/pytorch/engine/PtNDArray;Lai/djl/pytorch/engine/PtNDArray;ZZ)V' in 'ai/djl/pytorch/jni/JniUtils')}
+  0x000000011ea549d0: 026d 8bd2 | 224d a7f2 | 2200 c0f2 | 0008 40b9 | 0004 53d2 | 48a0 40f9 | 1f00 08eb | a100 0054 
+  0x000000011ea549f0: 48a4 40f9 | 0805 0091 | 48a4 00f9 | 1700 0014 | 48a8 40f9 | 1f00 08eb | a100 0054 | 48ac 40f9 
+  0x000000011ea54a10: 0805 0091 | 48ac 00f9 | 1000 0014 | 48a0 40f9 | a800 00b5 | 40a0 00f9 | e803 40b2 | 48a4 00f9 
+  0x000000011ea54a30: 0a00 0014 | 48a8 40f9 | a800 00b5 | 40a8 00f9 | e803 40b2 | 48ac 00f9 | 0400 0014 | 489c 40f9 
+  0x000000011ea54a50: 0805 0091 | 489c 00f9 | 2008 40f9 
+
+  0x000000011ea54a5c: ; implicit exception: dispatches to 0x000000011ea54d50
+  0x000000011ea54a5c: bf03 40f9 | e103 1daa 
+
+  0x000000011ea54a64: ;   {metadata(method data for {method} {0x000000013a553e90} 'backward' '(Lai/djl/pytorch/engine/PtNDArray;Lai/djl/pytorch/engine/PtNDArray;ZZ)V' in 'ai/djl/pytorch/jni/JniUtils')}
+  0x000000011ea54a64: 026d 8bd2 | 224d a7f2 | 2200 c0f2 | 2108 40b9 | 2104 53d2 | 48b8 40f9 | 3f00 08eb | a100 0054 
+  0x000000011ea54a84: 48bc 40f9 | 0805 0091 | 48bc 00f9 | 1700 0014 | 48c0 40f9 | 3f00 08eb | a100 0054 | 48c4 40f9 
+  0x000000011ea54aa4: 0805 0091 | 48c4 00f9 | 1000 0014 | 48b8 40f9 | a800 00b5 | 41b8 00f9 | e803 40b2 | 48bc 00f9 
+  0x000000011ea54ac4: 0a00 0014 | 48c0 40f9 | a800 00b5 | 41c0 00f9 | e803 40b2 | 48c4 00f9 | 0400 0014 | 48b4 40f9 
+  0x000000011ea54ae4: 0805 0091 | 48b4 00f9 | e103 1daa | fd03 00aa 
+
+  0x000000011ea54af4: ; ImmutableOopMap {}
+                      ;*invokevirtual getHandle {reexecute=0 rethrow=0 return_oop=0}
+                      ; - ai.djl.pytorch.jni.JniUtils::backward@14 (line 1777)
+                      ;   {optimized virtual_call}
+  0x000000011ea54af4: bb87 df95 
+
+  0x000000011ea54af8: ;   {post_call_nop}
+  0x000000011ea54af8: 1f20 03d5 | 1f7e 80f2 | 1f20 80f2 
+
+  0x000000011ea54b04: ;   {metadata(method data for {method} {0x000000013a553e90} 'backward' '(Lai/djl/pytorch/engine/PtNDArray;Lai/djl/pytorch/engine/PtNDArray;ZZ)V' in 'ai/djl/pytorch/jni/JniUtils')}
+  0x000000011ea54b04: 056d 8bd2 | 254d a7f2 | 2500 c0f2 | a000 00b5 | a844 4639 | 0801 40b2 | a844 0639 | 2800 0014 
+  0x000000011ea54b24: 0408 40b9 | 8404 53d2 | a8d0 40f9 | 9f00 08eb | a100 0054 | a8d4 40f9 | 0805 0091 | a8d4 00f9 
+  0x000000011ea54b44: 1700 0014 | a8d8 40f9 | 9f00 08eb | a100 0054 | a8dc 40f9 | 0805 0091 | a8dc 00f9 | 1000 0014 
+  0x000000011ea54b64: a8d0 40f9 | a800 00b5 | a4d0 00f9 | e803 40b2 | a8d4 00f9 | 0a00 0014 | a8d8 40f9 | a800 00b5 
+  0x000000011ea54b84: a4d8 00f9 | e803 40b2 | a8dc 00f9 | 0400 0014 | a8cc 40f9 | 0805 0091 | a8cc 00f9 
+
+  0x000000011ea54ba0: ;   {metadata('java/lang/Long')}
+  0x000000011ea54ba0: 0455 89d2 | 4403 a0f2 | 0400 ccf2 | 0808 40b9 | 0805 53d2 | 1f01 04eb | e10c 0054 | 0100 0014 
+  0x000000011ea54bc0: e203 00aa 
+
+  0x000000011ea54bc4: ; implicit exception: dispatches to 0x000000011ea54d5c
+  0x000000011ea54bc4: 5f00 40f9 | e303 02aa 
+
+  0x000000011ea54bcc: ;   {metadata(method data for {method} {0x000000013a553e90} 'backward' '(Lai/djl/pytorch/engine/PtNDArray;Lai/djl/pytorch/engine/PtNDArray;ZZ)V' in 'ai/djl/pytorch/jni/JniUtils')}
+  0x000000011ea54bcc: 046d 8bd2 | 244d a7f2 | 2400 c0f2 | 6308 40b9 | 6304 53d2 | 88e8 40f9 | 7f00 08eb | a100 0054 
+  0x000000011ea54bec: 88ec 40f9 | 0805 0091 | 88ec 00f9 | 1700 0014 | 88f0 40f9 | 7f00 08eb | a100 0054 | 88f4 40f9 
+  0x000000011ea54c0c: 0805 0091 | 88f4 00f9 | 1000 0014 | 88e8 40f9 | a800 00b5 | 83e8 00f9 | e803 40b2 | 88ec 00f9 
+  0x000000011ea54c2c: 0a00 0014 | 88f0 40f9 | a800 00b5 | 83f0 00f9 | e803 40b2 | 88f4 00f9 | 0400 0014 | 88e4 40f9 
+  0x000000011ea54c4c: 0805 0091 | 88e4 00f9 | 4308 40f9 
+
+  0x000000011ea54c58: ;   {oop(a 'ai/djl/pytorch/jni/PyTorchLibrary'{0x0000000c1c1b1f00})}
+  0x000000011ea54c58: 01e0 83d2 | 6183 a3f2 | 8101 c0f2 | e203 01aa 
+
+  0x000000011ea54c68: ;   {metadata(method data for {method} {0x000000013a553e90} 'backward' '(Lai/djl/pytorch/engine/PtNDArray;Lai/djl/pytorch/engine/PtNDArray;ZZ)V' in 'ai/djl/pytorch/jni/JniUtils')}
+  0x000000011ea54c68: 046d 8bd2 | 244d a7f2 | 2400 c0f2 | 4208 40b9 | 4204 53d2 | 8800 41f9 | 5f00 08eb | a100 0054 
+  0x000000011ea54c88: 8804 41f9 | 0805 0091 | 8804 01f9 | 1700 0014 | 8808 41f9 | 5f00 08eb | a100 0054 | 880c 41f9 
+  0x000000011ea54ca8: 0805 0091 | 880c 01f9 | 1000 0014 | 8800 41f9 | a800 00b5 | 8200 01f9 | e803 40b2 | 8804 01f9 
+  0x000000011ea54cc8: 0a00 0014 | 8808 41f9 | a800 00b5 | 8208 01f9 | e803 40b2 | 880c 01f9 | 0400 0014 | 88fc 40f9 
+  0x000000011ea54ce8: 0805 0091 | 88fc 00f9 | e203 1daa | e417 4b29 
+
+  0x000000011ea54cf8: ; ImmutableOopMap {}
+                      ;*invokevirtual torchBackward {reexecute=0 rethrow=0 return_oop=0}
+                      ; - ai.djl.pytorch.jni.JniUtils::backward@25 (line 1776)
+                      ;   {optimized virtual_call}
+  0x000000011ea54cf8: 8808 e295 
+
+  0x000000011ea54cfc: ;   {post_call_nop}
+  0x000000011ea54cfc: 1f20 03d5 | 9fbe 80f2 | 1f40 80f2 | fd7b 47a9 | ff03 0291 
+
+  0x000000011ea54d10: ;   {poll_return}
+  0x000000011ea54d10: 8817 40f9 | ff63 28eb | 4802 0054 | c003 5fd6 
+
+  0x000000011ea54d20: ;   {metadata({method} {0x000000013a553e90} 'backward' '(Lai/djl/pytorch/engine/PtNDArray;Lai/djl/pytorch/engine/PtNDArray;ZZ)V' in 'ai/djl/pytorch/jni/JniUtils')}
+  0x000000011ea54d20: 08d2 87d2 | a84a a7f2 | 2800 c0f2 | e807 00f9 | 0800 8092 | e803 00f9 
+
+  0x000000011ea54d38: ; ImmutableOopMap {c_rarg1=Oop rfp=Oop }
+                      ;*synchronization entry
+                      ; - ai.djl.pytorch.jni.JniUtils::backward@-1 (line 1776)
+                      ;   {runtime_call C1 Runtime counter_overflow_blob}
+  0x000000011ea54d38: 026c c495 | cafe ff17 
+
+  0x000000011ea54d40: ; ImmutableOopMap {c_rarg1=Oop rfp=Oop }
+                      ;*invokevirtual getHandle {reexecute=0 rethrow=0 return_oop=0}
+                      ; - ai.djl.pytorch.jni.JniUtils::backward@4 (line 1777)
+                      ;   {runtime_call C1 Runtime throw_null_pointer_exception_blob}
+  0x000000011ea54d40: 405f c495 | e803 00aa 
+
+  0x000000011ea54d48: ; ImmutableOopMap {rfp=Oop }
+                      ;*checkcast {reexecute=0 rethrow=0 return_oop=0}
+                      ; - ai.djl.pytorch.jni.JniUtils::backward@7 (line 1777)
+                      ;   {runtime_call C1 Runtime throw_class_cast_exception_blob}
+  0x000000011ea54d48: 0e66 c495 
+
+  0x000000011ea54d4c: ; ImmutableOopMap {rfp=Oop c_rarg1=Oop }
+                      ;*invokevirtual longValue {reexecute=0 rethrow=0 return_oop=0}
+                      ; - ai.djl.pytorch.jni.JniUtils::backward@10 (line 1777)
+                      ;   {runtime_call C1 Runtime throw_null_pointer_exception_blob}
+  0x000000011ea54d4c: 3d5f c495 
+
+  0x000000011ea54d50: ; ImmutableOopMap {rfp=Oop }
+                      ;*invokevirtual getHandle {reexecute=0 rethrow=0 return_oop=0}
+                      ; - ai.djl.pytorch.jni.JniUtils::backward@14 (line 1777)
+                      ;   {runtime_call C1 Runtime throw_null_pointer_exception_blob}
+  0x000000011ea54d50: 3c5f c495 | e803 00aa 
+
+  0x000000011ea54d58: ; ImmutableOopMap {}
+                      ;*checkcast {reexecute=0 rethrow=0 return_oop=0}
+                      ; - ai.djl.pytorch.jni.JniUtils::backward@17 (line 1777)
+                      ;   {runtime_call C1 Runtime throw_class_cast_exception_blob}
+  0x000000011ea54d58: 0a66 c495 
+
+  0x000000011ea54d5c: ; ImmutableOopMap {c_rarg2=Oop }
+                      ;*invokevirtual longValue {reexecute=0 rethrow=0 return_oop=0}
+                      ; - ai.djl.pytorch.jni.JniUtils::backward@20 (line 1777)
+                      ;   {runtime_call C1 Runtime throw_null_pointer_exception_blob}
+  0x000000011ea54d5c: 395f c495 
+
+  0x000000011ea54d60: ;   {internal_word}
+  0x000000011ea54d60: 88fd ff10 | 8863 02f9 
+
+  0x000000011ea54d68: ;   {runtime_call SafepointBlob}
+  0x000000011ea54d68: c61f c115 | 80b7 42f9 | 9fb7 02f9 | 9fbb 02f9 | fd7b 47a9 | ff03 0291 
+
+  0x000000011ea54d80: ;   {runtime_call C1 Runtime unwind_exception_blob}
+  0x000000011ea54d80: 505d c415 | 0000 0000 
+[Stub Code]
+  0x000000011ea54d88: ;   {static_stub}
+  0x000000011ea54d88: df3f 03d5 
+
+  0x000000011ea54d8c: ;   {metadata(nullptr)}
+  0x000000011ea54d8c: 0c00 80d2 | 0c00 a0f2 | 0c00 c0f2 | 0800 80d2 | 0800 a0f2 | 0800 c0f2 | 0001 1fd6 
+
+  0x000000011ea54da8: ;   {trampoline_stub}
+  0x000000011ea54da8: 4800 0058 | 0001 1fd6 | e069 2326 | 0100 0000 
+
+  0x000000011ea54db8: ;   {static_stub}
+  0x000000011ea54db8: df3f 03d5 
+
+  0x000000011ea54dbc: ;   {metadata(nullptr)}
+  0x000000011ea54dbc: 0c00 80d2 | 0c00 a0f2 | 0c00 c0f2 | 0800 80d2 | 0800 a0f2 | 0800 c0f2 | 0001 1fd6 
+
+  0x000000011ea54dd8: ;   {trampoline_stub}
+  0x000000011ea54dd8: 4800 0058 | 0001 1fd6 | e069 2326 | 0100 0000 
+
+  0x000000011ea54de8: ;   {trampoline_stub}
+  0x000000011ea54de8: 4800 0058 | 0001 1fd6 | 186f 2d26 | 0100 0000 
+
+  0x000000011ea54df8: ;   {static_stub}
+  0x000000011ea54df8: df3f 03d5 
+
+  0x000000011ea54dfc: ;   {metadata(nullptr)}
+  0x000000011ea54dfc: 0c00 80d2 | 0c00 a0f2 | 0c00 c0f2 | 0800 80d2 | 0800 a0f2 | 0800 c0f2 | 0001 1fd6 
+[Exception Handler]
+  0x000000011ea54e18: ;   {runtime_call C1 Runtime handle_exception_from_callee_blob}
+  0x000000011ea54e18: 1a65 c495 
+
+  0x000000011ea54e1c: ;   {external_word}
+  0x000000011ea54e1c: e04b 99d2 | 80e8 a1f2 | 2000 c0f2 | c1d5 bbd4 
+[Deopt Handler Code]
+  0x000000011ea54e2c: 1e00 0010 
+
+  0x000000011ea54e30: ;   {runtime_call DeoptimizationBlob}
+  0x000000011ea54e30: 1420 c115 | 0000 0000 
+[/MachCode]
+
+
+Compiled method (c1) 909839 3623       3       ai.djl.pytorch.engine.PtGradientCollector::backward (45 bytes)
+ total in heap  [0x000000011ea7de48,0x000000011ea7eec0] = 4216
+ main code      [0x000000011ea7df40,0x000000011ea7ed08] = 3528
+ stub code      [0x000000011ea7ed08,0x000000011ea7eea8] = 416
+ oops           [0x000000011ea7eea8,0x000000011ea7eec0] = 24
+ mutable data [0x00000008454ad880,0x00000008454adb98] = 792
+ relocation     [0x00000008454ad880,0x00000008454ada48] = 456
+ metadata       [0x00000008454ada48,0x00000008454adb98] = 336
+ immutable data [0x000000084ec2ed00,0x000000084ec2f110] = 1040
+ dependencies   [0x000000084ec2ed00,0x000000084ec2ed48] = 72
+ nul chk table  [0x000000084ec2ed48,0x000000084ec2ed78] = 48
+ scopes pcs     [0x000000084ec2ed78,0x000000084ec2ef88] = 528
+ scopes data    [0x000000084ec2ef88,0x000000084ec2f110] = 392
+
+[Constant Pool (empty)]
+
+[MachCode]
+[Instructions begin]
+  0x000000011ea7df40: 1f20 03d5 | 1f20 03d5 | 1f20 03d5 | 1f20 03d5 | 1f20 03d5 | 1f20 03d5 | 1f20 03d5 | 1f20 03d5 
+  0x000000011ea7df60: 1f20 03d5 | 1f20 03d5 | 1f20 03d5 
+[Entry Point]
+  # {method} {0x000000013a64f368} 'backward' '(Lai/djl/ndarray/NDArray;)V' in 'ai/djl/pytorch/engine/PtGradientCollector'
+  # this:     c_rarg1:c_rarg1 
+                        = 'ai/djl/pytorch/engine/PtGradientCollector'
+  # parm0:    c_rarg2:c_rarg2 
+                        = 'ai/djl/ndarray/NDArray'
+  #           [sp+0xc0]  (sp of caller)
+  0x000000011ea7df6c: 2808 40b9 | 2a09 40b9 | 1f01 0a6b | 4000 0054 
+
+  0x000000011ea7df7c: ;   {runtime_call Shared Runtime ic_miss_blob}
+  0x000000011ea7df7c: 2175 c015 
+[Verified Entry Point]
+  0x000000011ea7df80: 1f20 03d5 | e953 40d1 | 3f01 00f9 | ff03 03d1 | fd7b 0ba9 | 2801 0018 | 8923 40b9 | 1f01 09eb 
+  0x000000011ea7dfa0: e000 0054 
+
+  0x000000011ea7dfa4: ;   {runtime_call Stub::method_entry_barrier}
+  0x000000011ea7dfa4: 0830 88d2 | 48b5 a4f2 | 2800 c0f2 | 0001 3fd6 | 0200 0014 | 0100 0000 | fd03 01aa | fd43 00f9 
+  0x000000011ea7dfc4: ;   {metadata(method data for {method} {0x000000013a64f368} 'backward' '(Lai/djl/ndarray/NDArray;)V' in 'ai/djl/pytorch/engine/PtGradientCollector')}
+  0x000000011ea7dfc4: 0179 89d2 | 214d a7f2 | 2100 c0f2 | 2090 40b9 | 0008 0011 | 2090 00b9 | 0024 1f12 | 1f00 0071 
+  0x000000011ea7dfe4: 0058 0054 | 4201 00b4 
+
+  0x000000011ea7dfec: ;   {metadata('ai/djl/pytorch/engine/PtNDArray')}
+  0x000000011ea7dfec: 0300 8cd2 | e320 a0f2 | 0300 ccf2 | 4408 40b9 | 8404 53d2 | 8820 40f9 | 7f00 08eb | e157 0054 
+  0x000000011ea7e00c: 0100 0014 | e103 02aa 
+
+  0x000000011ea7e014: ; implicit exception: dispatches to 0x000000011ea7eb08
+  0x000000011ea7e014: 5f00 40f9 | e103 02aa 
+
+  0x000000011ea7e01c: ;   {metadata(method data for {method} {0x000000013a64f368} 'backward' '(Lai/djl/ndarray/NDArray;)V' in 'ai/djl/pytorch/engine/PtGradientCollector')}
+  0x000000011ea7e01c: 0079 89d2 | 204d a7f2 | 2000 c0f2 | 0874 40f9 | 0805 0091 | 0874 00f9 
+
+  0x000000011ea7e034: ;   {metadata(method data for {method} {0x000000013a60b500} 'getManager' '()Lai/djl/ndarray/NDManager;' in 'ai/djl/pytorch/engine/PtNDArray')}
+  0x000000011ea7e034: 01c0 9fd2 | c14c a7f2 | 2100 c0f2 | 2090 40b9 | 0008 0011 | 2090 00b9 | 004c 1f12 | 1f00 0071 
+  0x000000011ea7e054: c055 0054 | e103 02aa 
+
+  0x000000011ea7e05c: ;   {metadata(method data for {method} {0x000000013a60b500} 'getManager' '()Lai/djl/ndarray/NDManager;' in 'ai/djl/pytorch/engine/PtNDArray')}
+  0x000000011ea7e05c: 00c0 9fd2 | c04c a7f2 | 2000 c0f2 | 0874 40f9 | 0805 0091 | 0874 00f9 | 4030 40b9 | 4000 00b4 
+  0x000000011ea7e07c: 600f 008b | 4201 00b4 
+
+  0x000000011ea7e084: ;   {metadata('ai/djl/pytorch/engine/PtNDArray')}
+  0x000000011ea7e084: 0400 8cd2 | e420 a0f2 | 0400 ccf2 | 4508 40b9 | a504 53d2 | a820 40f9 | 9f00 08eb | 6154 0054 
+  0x000000011ea7e0a4: 0100 0014 | e103 02aa | e103 02aa 
+
+  0x000000011ea7e0b0: ;   {metadata(method data for {method} {0x000000013a64f368} 'backward' '(Lai/djl/ndarray/NDArray;)V' in 'ai/djl/pytorch/engine/PtGradientCollector')}
+  0x000000011ea7e0b0: 0379 89d2 | 234d a7f2 | 2300 c0f2 | 688c 40f9 | 0805 0091 | 688c 00f9 
+
+  0x000000011ea7e0c8: ;   {metadata(method data for {method} {0x000000013a5fc2a8} 'getShape' '()Lai/djl/ndarray/types/Shape;' in 'ai/djl/pytorch/engine/PtNDArray')}
+  0x000000011ea7e0c8: 01d6 8dd2 | 814c a7f2 | 2100 c0f2 | 2390 40b9 | 6308 0011 | 2390 00b9 | 634c 1f12 | 7f00 0071 
+  0x000000011ea7e0e8: 4052 0054 | 4124 40b9 | 4100 00b4 | 610f 018b | e303 1faa | 3f00 03eb 
+
+  0x000000011ea7e100: ;   {metadata(method data for {method} {0x000000013a5fc2a8} 'getShape' '()Lai/djl/ndarray/types/Shape;' in 'ai/djl/pytorch/engine/PtNDArray')}
+  0x000000011ea7e100: 01d6 8dd2 | 814c a7f2 | 2100 c0f2 | 081d 80d2 | 091b 80d2 | 0301 899a | 2468 63f8 | 8404 0091 
+  0x000000011ea7e120: 2468 23f8 | e047 00f9 | 6000 0054 | fd03 02aa | 1800 0014 
+
+  0x000000011ea7e134: ;   {metadata(method data for {method} {0x000000013a5fc2a8} 'getShape' '()Lai/djl/ndarray/types/Shape;' in 'ai/djl/pytorch/engine/PtNDArray')}
+  0x000000011ea7e134: 01d6 8dd2 | 814c a7f2 | 2100 c0f2 | 287c 40f9 | 0805 0091 | 287c 00f9 | e103 02aa | fd03 02aa 
+  0x000000011ea7e154: ; ImmutableOopMap {rfp=Oop [128]=Oop [136]=Oop }
+                      ;*invokestatic getShape {reexecute=0 rethrow=0 return_oop=0}
+                      ; - ai.djl.pytorch.engine.PtNDArray::getShape@9 (line 149)
+                      ; - ai.djl.pytorch.engine.PtGradientCollector::backward@7 (line 53)
+                      ;   {static_call}
+  0x000000011ea7e154: cbd7 df95 
+
+  0x000000011ea7e158: ;   {post_call_nop}
+  0x000000011ea7e158: 1f20 03d5 | 1f62 80f2 | 1f00 80f2 | 8123 4139 | 3f00 0071 | 214f 0054 | 0800 1beb | 0821 9f9a 
+  0x000000011ea7e178: 08fd 43d3 | a827 00b9 | a103 00ca | 21fc 57d3 | 3f00 00f1 | 014f 0054 | a027 40b9 | 4000 00b4 
+  0x000000011ea7e198: 600f 008b | 5d01 00b4 
+
+  0x000000011ea7e1a0: ;   {metadata('ai/djl/pytorch/engine/PtNDArray')}
+  0x000000011ea7e1a0: 0300 8cd2 | e320 a0f2 | 0300 ccf2 | a40b 40b9 | 8404 53d2 | 8820 40f9 | 7f00 08eb | 014e 0054 
+  0x000000011ea7e1c0: 0100 0014 | e103 1daa | e203 1daa 
+
+  0x000000011ea7e1cc: ;   {metadata(method data for {method} {0x000000013a64f368} 'backward' '(Lai/djl/ndarray/NDArray;)V' in 'ai/djl/pytorch/engine/PtGradientCollector')}
+  0x000000011ea7e1cc: 0179 89d2 | 214d a7f2 | 2100 c0f2 | 28a4 40f9 | 0805 0091 | 28a4 00f9 
+
+  0x000000011ea7e1e4: ;   {metadata(method data for {method} {0x000000013a5fc108} 'getDataType' '()Lai/djl/ndarray/types/DataType;' in 'ai/djl/pytorch/engine/PtNDArray')}
+  0x000000011ea7e1e4: 01ff 8dd2 | 814c a7f2 | 2100 c0f2 | 2290 40b9 | 4208 0011 | 2290 00b9 | 424c 1f12 | 5f00 0071 
+  0x000000011ea7e204: e04b 0054 | a123 40b9 | 4100 00b4 | 610f 018b | e203 1faa | 3f00 02eb 
+
+  0x000000011ea7e21c: ;   {metadata(method data for {method} {0x000000013a5fc108} 'getDataType' '()Lai/djl/ndarray/types/DataType;' in 'ai/djl/pytorch/engine/PtNDArray')}
+  0x000000011ea7e21c: 01ff 8dd2 | 814c a7f2 | 2100 c0f2 | 081b 80d2 | 091d 80d2 | 0211 899a | 2368 62f8 | 6304 0091 
+  0x000000011ea7e23c: 2368 22f8 | e04b 00f9 | 4127 0054 
+
+  0x000000011ea7e248: ;   {metadata(method data for {method} {0x000000013a5fc108} 'getDataType' '()Lai/djl/ndarray/types/DataType;' in 'ai/djl/pytorch/engine/PtNDArray')}
+  0x000000011ea7e248: 01ff 8dd2 | 814c a7f2 | 2100 c0f2 | 287c 40f9 | 0805 0091 | 287c 00f9 
+
+  0x000000011ea7e260: ;   {metadata(method data for {method} {0x000000013a553530} 'getDataType' '(Lai/djl/pytorch/engine/PtNDArray;)Lai/djl/ndarray/types/DataType;' in 'ai/djl/pytorch/jni/JniUtils')}
+  0x000000011ea7e260: 0165 8ed2 | 814c a7f2 | 2100 c0f2 | 2290 40b9 | 4208 0011 | 2290 00b9 | 424c 1f12 | 5f00 0071 
+  0x000000011ea7e280: 0049 0054 | e203 1daa 
+
+  0x000000011ea7e288: ;   {metadata(method data for {method} {0x000000013a553530} 'getDataType' '(Lai/djl/pytorch/engine/PtNDArray;)Lai/djl/ndarray/types/DataType;' in 'ai/djl/pytorch/jni/JniUtils')}
+  0x000000011ea7e288: 0165 8ed2 | 814c a7f2 | 2100 c0f2 | 4208 40b9 | 4204 53d2 | 2870 40f9 | 5f00 08eb | a100 0054 
+  0x000000011ea7e2a8: 2874 40f9 | 0805 0091 | 2874 00f9 | 1700 0014 | 2878 40f9 | 5f00 08eb | a100 0054 | 287c 40f9 
+  0x000000011ea7e2c8: 0805 0091 | 287c 00f9 | 1000 0014 | 2870 40f9 | a800 00b5 | 2270 00f9 | e803 40b2 | 2874 00f9 
+  0x000000011ea7e2e8: 0a00 0014 | 2878 40f9 | a800 00b5 | 2278 00f9 | e803 40b2 | 287c 00f9 | 0400 0014 | 286c 40f9 
+  0x000000011ea7e308: 0805 0091 | 286c 00f9 | e103 1daa 
+
+  0x000000011ea7e314: ; ImmutableOopMap {rfp=Oop [128]=Oop [136]=Oop [144]=Oop }
+                      ;*invokevirtual getHandle {reexecute=0 rethrow=0 return_oop=0}
+                      ; - ai.djl.pytorch.jni.JniUtils::getDataType@4 (line 1694)
+                      ; - ai.djl.pytorch.engine.PtNDArray::getDataType@9 (line 131)
+                      ; - ai.djl.pytorch.engine.PtGradientCollector::backward@13 (line 53)
+                      ;   {optimized virtual_call}
+  0x000000011ea7e314: b3e1 de95 
+
+  0x000000011ea7e318: ;   {post_call_nop}
+  0x000000011ea7e318: 1f20 03d5 | 1f9a 80f2 | 1f20 80f2 
+
+  0x000000011ea7e324: ;   {metadata(method data for {method} {0x000000013a553530} 'getDataType' '(Lai/djl/pytorch/engine/PtNDArray;)Lai/djl/ndarray/types/DataType;' in 'ai/djl/pytorch/jni/JniUtils')}
+  0x000000011ea7e324: 0365 8ed2 | 834c a7f2 | 2300 c0f2 | a000 00b5 | 6804 4439 | 0801 40b2 | 6804 0439 | 2800 0014 
+  0x000000011ea7e344: 0208 40b9 | 4204 53d2 | 6888 40f9 | 5f00 08eb | a100 0054 | 688c 40f9 | 0805 0091 | 688c 00f9 
+  0x000000011ea7e364: 1700 0014 | 6890 40f9 | 5f00 08eb | a100 0054 | 6894 40f9 | 0805 0091 | 6894 00f9 | 1000 0014 
+  0x000000011ea7e384: 6888 40f9 | a800 00b5 | 6288 00f9 | e803 40b2 | 688c 00f9 | 0a00 0014 | 6890 40f9 | a800 00b5 
+  0x000000011ea7e3a4: 6290 00f9 | e803 40b2 | 6894 00f9 | 0400 0014 | 6884 40f9 | 0805 0091 | 6884 00f9 
+
+  0x000000011ea7e3c0: ;   {metadata('java/lang/Long')}
+  0x000000011ea7e3c0: 0255 89d2 | 4203 a0f2 | 0200 ccf2 | 0808 40b9 | 0805 53d2 | 1f01 02eb | 413f 0054 | 0100 0014 
+  0x000000011ea7e3e0: e203 00aa 
+
+  0x000000011ea7e3e4: ; implicit exception: dispatches to 0x000000011ea7ebc8
+  0x000000011ea7e3e4: 5f00 40f9 | e103 02aa 
+
+  0x000000011ea7e3ec: ;   {metadata(method data for {method} {0x000000013a553530} 'getDataType' '(Lai/djl/pytorch/engine/PtNDArray;)Lai/djl/ndarray/types/DataType;' in 'ai/djl/pytorch/jni/JniUtils')}
+  0x000000011ea7e3ec: 0065 8ed2 | 804c a7f2 | 2000 c0f2 | 2108 40b9 | 2104 53d2 | 08a0 40f9 | 3f00 08eb | a100 0054 
+  0x000000011ea7e40c: 08a4 40f9 | 0805 0091 | 08a4 00f9 | 1700 0014 | 08a8 40f9 | 3f00 08eb | a100 0054 | 08ac 40f9 
+  0x000000011ea7e42c: 0805 0091 | 08ac 00f9 | 1000 0014 | 08a0 40f9 | a800 00b5 | 01a0 00f9 | e803 40b2 | 08a4 00f9 
+  0x000000011ea7e44c: 0a00 0014 | 08a8 40f9 | a800 00b5 | 01a8 00f9 | e803 40b2 | 08ac 00f9 | 0400 0014 | 089c 40f9 
+  0x000000011ea7e46c: 0805 0091 | 089c 00f9 | 4108 40f9 
+
+  0x000000011ea7e478: ;   {oop(a 'ai/djl/pytorch/jni/PyTorchLibrary'{0x0000000c1c1b1f00})}
+  0x000000011ea7e478: 00e0 83d2 | 6083 a3f2 | 8001 c0f2 | e203 00aa 
+
+  0x000000011ea7e488: ;   {metadata(method data for {method} {0x000000013a553530} 'getDataType' '(Lai/djl/pytorch/engine/PtNDArray;)Lai/djl/ndarray/types/DataType;' in 'ai/djl/pytorch/jni/JniUtils')}
+  0x000000011ea7e488: 0365 8ed2 | 834c a7f2 | 2300 c0f2 | 4208 40b9 | 4204 53d2 | 68b8 40f9 | 5f00 08eb | a100 0054 
+  0x000000011ea7e4a8: 68bc 40f9 | 0805 0091 | 68bc 00f9 | 1700 0014 | 68c0 40f9 | 5f00 08eb | a100 0054 | 68c4 40f9 
+  0x000000011ea7e4c8: 0805 0091 | 68c4 00f9 | 1000 0014 | 68b8 40f9 | a800 00b5 | 62b8 00f9 | e803 40b2 | 68bc 00f9 
+  0x000000011ea7e4e8: 0a00 0014 | 68c0 40f9 | a800 00b5 | 62c0 00f9 | e803 40b2 | 68c4 00f9 | 0400 0014 | 68b4 40f9 
+  0x000000011ea7e508: 0805 0091 | 68b4 00f9 | e203 01aa | e103 00aa 
+
+  0x000000011ea7e518: ; ImmutableOopMap {rfp=Oop [128]=Oop [136]=Oop [144]=Oop }
+                      ;*invokevirtual torchDType {reexecute=0 rethrow=0 return_oop=0}
+                      ; - ai.djl.pytorch.jni.JniUtils::getDataType@13 (line 1694)
+                      ; - ai.djl.pytorch.engine.PtNDArray::getDataType@9 (line 131)
+                      ; - ai.djl.pytorch.engine.PtGradientCollector::backward@13 (line 53)
+                      ;   {optimized virtual_call}
+  0x000000011ea7e518: f093 de95 
+
+  0x000000011ea7e51c: ;   {post_call_nop}
+  0x000000011ea7e51c: 1f20 03d5 | 9fda 80f2 | 1f40 80f2 
+
+  0x000000011ea7e528: ;   {metadata(method data for {method} {0x000000013a553530} 'getDataType' '(Lai/djl/pytorch/engine/PtNDArray;)Lai/djl/ndarray/types/DataType;' in 'ai/djl/pytorch/jni/JniUtils')}
+  0x000000011ea7e528: 0165 8ed2 | 814c a7f2 | 2100 c0f2 | 28cc 40f9 | 0805 0091 | 28cc 00f9 
+
+  0x000000011ea7e540: ;   {metadata(method data for {method} {0x000000013a59f3a8} 'values' '()[Lai/djl/ndarray/types/DataType;' in 'ai/djl/ndarray/types/DataType')}
+  0x000000011ea7e540: 01a2 8ed2 | 814c a7f2 | 2100 c0f2 | 2290 40b9 | 4208 0011 | 2290 00b9 | 424c 1f12 | 5f00 0071 
+  0x000000011ea7e560: 6033 0054 
+
+  0x000000011ea7e564: ;   {oop(a 'ai/djl/ndarray/types/DataType'[16] {0x0000000c1c1b4758})}
+  0x000000011ea7e564: 01eb 88d2 | 6183 a3f2 | 8101 c0f2 | e203 01aa 
+
+  0x000000011ea7e574: ;   {metadata(method data for {method} {0x000000013a59f3a8} 'values' '()[Lai/djl/ndarray/types/DataType;' in 'ai/djl/ndarray/types/DataType')}
+  0x000000011ea7e574: 03a2 8ed2 | 834c a7f2 | 2300 c0f2 | 4208 40b9 | 4204 53d2 | 6870 40f9 | 5f00 08eb | a100 0054 
+  0x000000011ea7e594: 6874 40f9 | 0805 0091 | 6874 00f9 | 1700 0014 | 6878 40f9 | 5f00 08eb | a100 0054 | 687c 40f9 
+  0x000000011ea7e5b4: 0805 0091 | 687c 00f9 | 1000 0014 | 6870 40f9 | a800 00b5 | 6270 00f9 | e803 40b2 | 6874 00f9 
+  0x000000011ea7e5d4: 0a00 0014 | 6878 40f9 | a800 00b5 | 6278 00f9 | e803 40b2 | 687c 00f9 | 0400 0014 | 686c 40f9 
+  0x000000011ea7e5f4: 0805 0091 | 686c 00f9 | fd4f 00f9 | fd03 00aa 
+
+  0x000000011ea7e604: ; ImmutableOopMap {[128]=Oop [136]=Oop [144]=Oop [152]=Oop }
+                      ;*invokevirtual clone {reexecute=0 rethrow=0 return_oop=0}
+                      ; - ai.djl.ndarray.types.DataType::values@3 (line 27)
+                      ; - ai.djl.pytorch.jni.JniUtils::getDataType@17 (line 1695)
+                      ; - ai.djl.pytorch.engine.PtNDArray::getDataType@9 (line 131)
+                      ; - ai.djl.pytorch.engine.PtGradientCollector::backward@13 (line 53)
+                      ;   {optimized virtual_call}
+  0x000000011ea7e604: 5595 dc95 
+
+  0x000000011ea7e608: ;   {post_call_nop}
+  0x000000011ea7e608: 1f20 03d5 | 1ff8 80f2 | 1f60 80f2 
+
+  0x000000011ea7e614: ;   {metadata(method data for {method} {0x000000013a59f3a8} 'values' '()[Lai/djl/ndarray/types/DataType;' in 'ai/djl/ndarray/types/DataType')}
+  0x000000011ea7e614: 02a2 8ed2 | 824c a7f2 | 2200 c0f2 | a000 00b5 | 4804 4439 | 0801 40b2 | 4804 0439 | 2900 0014 
+  0x000000011ea7e634: 0108 40b9 | 2104 53d2 | 4888 40f9 | 3f00 08eb | a100 0054 | 488c 40f9 | 0805 0091 | 488c 00f9 
+  0x000000011ea7e654: 1700 0014 | 4890 40f9 | 3f00 08eb | a100 0054 | 4894 40f9 | 0805 0091 | 4894 00f9 | 1000 0014 
+  0x000000011ea7e674: 4888 40f9 | a800 00b5 | 4188 00f9 | e803 40b2 | 488c 00f9 | 0a00 0014 | 4890 40f9 | a800 00b5 
+  0x000000011ea7e694: 4190 00f9 | e803 40b2 | 4894 00f9 | 0400 0014 | 4884 40f9 | 0805 0091 | 4884 00f9 
+
+  0x000000011ea7e6b0: ;   {metadata('ai/djl/ndarray/types/DataType'[])}
+  0x000000011ea7e6b0: 015f 87d2 | c120 a0f2 | 0100 ccf2 | 0208 40b9 | 4204 53d2 | 4824 40f9 | 3f00 08eb | 0129 0054 
+  0x000000011ea7e6d0: 0100 0014 | e203 00aa 
+
+  0x000000011ea7e6d8: ; implicit exception: dispatches to 0x000000011ea7ebf4
+  0x000000011ea7e6d8: 430c 40b9 | bf03 036b | c228 0054 | a07f 4093 | 00f4 7ed3 | 0340 0091 | 4268 63b8 | 4200 00b4 
+  0x000000011ea7e6f8: 620f 028b | 8323 4139 | 7f00 0071 | fd4f 40f9 | 4128 0054 | 4800 1beb | 0821 9f9a | 08fd 43d3 
+  0x000000011ea7e718: a823 00b9 | a303 02ca | 63fc 57d3 | 7f00 00f1 | 2128 0054 | a323 40b9 | 4300 00b4 | 630f 038b 
+  0x000000011ea7e738: e08b 48a9 
+
+  0x000000011ea7e73c: ; implicit exception: dispatches to 0x000000011ea7ec3c
+  0x000000011ea7e73c: 1f00 40f9 | e103 00aa 
+
+  0x000000011ea7e744: ;   {metadata(method data for {method} {0x000000013a64f368} 'backward' '(Lai/djl/ndarray/NDArray;)V' in 'ai/djl/pytorch/engine/PtGradientCollector')}
+  0x000000011ea7e744: 0479 89d2 | 244d a7f2 | 2400 c0f2 | 2108 40b9 | 2104 53d2 | 88b8 40f9 | 3f00 08eb | a100 0054 
+  0x000000011ea7e764: 88bc 40f9 | 0805 0091 | 88bc 00f9 | 1700 0014 | 88c0 40f9 | 3f00 08eb | a100 0054 | 88c4 40f9 
+  0x000000011ea7e784: 0805 0091 | 88c4 00f9 | 1000 0014 | 88b8 40f9 | a800 00b5 | 81b8 00f9 | e803 40b2 | 88bc 00f9 
+  0x000000011ea7e7a4: 0a00 0014 | 88c0 40f9 | a800 00b5 | 81c0 00f9 | e803 40b2 | 88c4 00f9 | 0400 0014 | 88b4 40f9 
+  0x000000011ea7e7c4: 0805 0091 | 88b4 00f9 | e103 00aa 
+
+  0x000000011ea7e7d0: ; ImmutableOopMap {rfp=Oop [128]=Oop }
+                      ;*invokeinterface ones {reexecute=0 rethrow=0 return_oop=0}
+                      ; - ai.djl.pytorch.engine.PtGradientCollector::backward@18 (line 53)
+                      ;   {optimized virtual_call}
+  0x000000011ea7e7d0: 0cae fe97 
+
+  0x000000011ea7e7d4: ;   {post_call_nop}
+  0x000000011ea7e7d4: 1f20 03d5 | 9f31 81f2 | 1f80 80f2 | 5d01 00b4 
+
+  0x000000011ea7e7e4: ;   {metadata('ai/djl/pytorch/engine/PtNDArray')}
+  0x000000011ea7e7e4: 0300 8cd2 | e320 a0f2 | 0300 ccf2 | a40b 40b9 | 8404 53d2 | 8820 40f9 | 7f00 08eb | 0122 0054 
+  0x000000011ea7e804: 0100 0014 | e103 1daa | e203 1daa 
+
+  0x000000011ea7e810: ;   {metadata(method data for {method} {0x000000013a64f368} 'backward' '(Lai/djl/ndarray/NDArray;)V' in 'ai/djl/pytorch/engine/PtGradientCollector')}
+  0x000000011ea7e810: 0179 89d2 | 214d a7f2 | 2100 c0f2 | 28d4 40f9 | 0805 0091 | 28d4 00f9 
+
+  0x000000011ea7e828: ;   {metadata(method data for {method} {0x000000013a5fc1d8} 'getDevice' '()Lai/djl/Device;' in 'ai/djl/pytorch/engine/PtNDArray')}
+  0x000000011ea7e828: 0109 98d2 | 414c a7f2 | 2100 c0f2 | 2290 40b9 | 4208 0011 | 2290 00b9 | 424c 1f12 | 5f00 0071 
+  0x000000011ea7e848: e01f 0054 | a11f 40b9 | 4100 00b4 | 610f 018b | e203 1faa | 3f00 02eb 
+
+  0x000000011ea7e860: ;   {metadata(method data for {method} {0x000000013a5fc1d8} 'getDevice' '()Lai/djl/Device;' in 'ai/djl/pytorch/engine/PtNDArray')}
+  0x000000011ea7e860: 0109 98d2 | 414c a7f2 | 2100 c0f2 | 081b 80d2 | 091d 80d2 | 0211 899a | 2368 62f8 | 6304 0091 
+  0x000000011ea7e880: 2368 22f8 | e053 00f9 | e102 0054 
+
+  0x000000011ea7e88c: ;   {metadata(method data for {method} {0x000000013a5fc1d8} 'getDevice' '()Lai/djl/Device;' in 'ai/djl/pytorch/engine/PtNDArray')}
+  0x000000011ea7e88c: 0109 98d2 | 414c a7f2 | 2100 c0f2 | 287c 40f9 | 0805 0091 | 287c 00f9 | e103 1daa 
+
+  0x000000011ea7e8a8: ; ImmutableOopMap {rfp=Oop [128]=Oop [160]=Oop }
+                      ;*invokestatic getDevice {reexecute=0 rethrow=0 return_oop=0}
+                      ; - ai.djl.pytorch.engine.PtNDArray::getDevice@9 (line 140)
+                      ; - ai.djl.pytorch.engine.PtGradientCollector::backward@24 (line 54)
+                      ;   {static_call}
+  0x000000011ea7e8a8: 56ef df95 
+
+  0x000000011ea7e8ac: ;   {post_call_nop}
+  0x000000011ea7e8ac: 1f20 03d5 | 9f4c 81f2 | 1fa0 80f2 | 8223 4139 | 5f00 0071 | 211d 0054 | 0800 1beb | 0821 9f9a 
+  0x000000011ea7e8cc: 08fd 43d3 | a81f 00b9 | a203 00ca | 42fc 57d3 | 5f00 00f1 | 011d 0054 | a21f 40b9 | 4200 00b4 
+  0x000000011ea7e8ec: 620f 028b | e053 40f9 | 4001 00b4 
+
+  0x000000011ea7e8f8: ;   {metadata('ai/djl/pytorch/engine/PtNDArray')}
+  0x000000011ea7e8f8: 0500 8cd2 | e520 a0f2 | 0500 ccf2 | 0608 40b9 | c604 53d2 | c820 40f9 | bf00 08eb | e11b 0054 
+  0x000000011ea7e918: 0100 0014 | e303 00aa 
+
+  0x000000011ea7e920: ; implicit exception: dispatches to 0x000000011ea7ec94
+  0x000000011ea7e920: 1f00 40f9 | e303 00aa 
+
+  0x000000011ea7e928: ;   {metadata(method data for {method} {0x000000013a64f368} 'backward' '(Lai/djl/ndarray/NDArray;)V' in 'ai/djl/pytorch/engine/PtGradientCollector')}
+  0x000000011ea7e928: 0179 89d2 | 214d a7f2 | 2100 c0f2 | 28ec 40f9 | 0805 0091 | 28ec 00f9 
+
+  0x000000011ea7e940: ;   {metadata(method data for {method} {0x000000013a60b458} 'toDevice' '(Lai/djl/Device;Z)Lai/djl/ndarray/NDArray;' in 'ai/djl/pytorch/engine/PtNDArray')}
+  0x000000011ea7e940: 03c0 98d2 | 434c a7f2 | 2300 c0f2 | 6190 40b9 | 2108 0011 | 6190 00b9 | 214c 1f12 | 3f00 0071 
+  0x000000011ea7e960: c019 0054 | e303 00aa 
+
+  0x000000011ea7e968: ;   {metadata(method data for {method} {0x000000013a60b458} 'toDevice' '(Lai/djl/Device;Z)Lai/djl/ndarray/NDArray;' in 'ai/djl/pytorch/engine/PtNDArray')}
+  0x000000011ea7e968: 01c0 98d2 | 414c a7f2 | 2100 c0f2 | 2874 40f9 | 0805 0091 | 2874 00f9 | 0300 a052 | e103 00aa 
+  0x000000011ea7e988: ; ImmutableOopMap {rfp=Oop [128]=Oop }
+                      ;*invokevirtual toDevice {reexecute=0 rethrow=0 return_oop=0}
+                      ; - ai.djl.pytorch.engine.PtNDArray::toDevice@3 (line 39)
+                      ; - ai.djl.pytorch.engine.PtGradientCollector::backward@30 (line 54)
+                      ;   {optimized virtual_call}
+  0x000000011ea7e988: 8e59 ff97 
+
+  0x000000011ea7e98c: ;   {post_call_nop}
+  0x000000011ea7e98c: 1f20 03d5 | 9f68 81f2 | 1fc0 80f2 | e143 40f9 
+
+  0x000000011ea7e99c: ;   {metadata(method data for {method} {0x000000013a64f368} 'backward' '(Lai/djl/ndarray/NDArray;)V' in 'ai/djl/pytorch/engine/PtGradientCollector')}
+  0x000000011ea7e99c: 0279 89d2 | 224d a7f2 | 2200 c0f2 | 48fc 40f9 | 0805 0091 | 48fc 00f9 
+
+  0x000000011ea7e9b4: ;   {metadata(method data for {method} {0x000000013a64f450} 'backward' '(Lai/djl/ndarray/NDArray;Lai/djl/ndarray/NDArray;ZZ)V' in 'ai/djl/pytorch/engine/PtGradientCollector')}
+  0x000000011ea7e9b4: 01f5 8ad2 | 214d a7f2 | 2100 c0f2 | 2290 40b9 | 4208 0011 | 2290 00b9 | 424c 1f12 | 5f00 0071 
+  0x000000011ea7e9d4: 2017 0054 
+
+  0x000000011ea7e9d8: ;   {metadata(method data for {method} {0x000000013a64f450} 'backward' '(Lai/djl/ndarray/NDArray;Lai/djl/ndarray/NDArray;ZZ)V' in 'ai/djl/pytorch/engine/PtGradientCollector')}
+  0x000000011ea7e9d8: 04f5 8ad2 | 244d a7f2 | 2400 c0f2 | bd00 00b5 | 8844 4339 | 0801 40b2 | 8844 0339 | 2800 0014 
+  0x000000011ea7e9f8: a30b 40b9 | 6304 53d2 | 8870 40f9 | 7f00 08eb | a100 0054 | 8874 40f9 | 0805 0091 | 8874 00f9 
+  0x000000011ea7ea18: 1700 0014 | 8878 40f9 | 7f00 08eb | a100 0054 | 887c 40f9 | 0805 0091 | 887c 00f9 | 1000 0014 
+  0x000000011ea7ea38: 8870 40f9 | a800 00b5 | 8370 00f9 | e803 40b2 | 8874 00f9 | 0a00 0014 | 8878 40f9 | a800 00b5 
+  0x000000011ea7ea58: 8378 00f9 | e803 40b2 | 887c 00f9 | 0400 0014 | 886c 40f9 | 0805 0091 | 886c 00f9 
+
+  0x000000011ea7ea74: ;   {metadata('ai/djl/pytorch/engine/PtNDArray')}
+  0x000000011ea7ea74: 0300 8cd2 | e320 a0f2 | 0300 ccf2 | a80b 40b9 | 0805 53d2 | 1f01 03eb | 6112 0054 | 0100 0014 
+  0x000000011ea7ea94: e103 1daa 
+
+  0x000000011ea7ea98: ;   {metadata(method data for {method} {0x000000013a64f450} 'backward' '(Lai/djl/ndarray/NDArray;Lai/djl/ndarray/NDArray;ZZ)V' in 'ai/djl/pytorch/engine/PtGradientCollector')}
+  0x000000011ea7ea98: 02f5 8ad2 | 224d a7f2 | 2200 c0f2 | 489c 40f9 | 0805 0091 | 489c 00f9 | e203 00aa | 0300 a052 
+  0x000000011ea7eab8: 0400 a052 
+
+  0x000000011ea7eabc: ; ImmutableOopMap {}
+                      ;*invokestatic backward {reexecute=0 rethrow=0 return_oop=0}
+                      ; - ai.djl.pytorch.engine.PtGradientCollector::backward@11 (line 70)
+                      ; - ai.djl.pytorch.engine.PtGradientCollector::backward@41 (line 55)
+                      ;   {static_call}
+  0x000000011ea7eabc: 5157 ff97 
+
+  0x000000011ea7eac0: ;   {post_call_nop}
+  0x000000011ea7eac0: 1f20 03d5 | 1f8f 81f2 | 1fe0 80f2 | fd7b 4ba9 | ff03 0391 
+
+  0x000000011ea7ead4: ;   {poll_return}
+  0x000000011ea7ead4: 8817 40f9 | ff63 28eb | 2810 0054 | c003 5fd6 
+
+  0x000000011ea7eae4: ;   {metadata({method} {0x000000013a64f368} 'backward' '(Lai/djl/ndarray/NDArray;)V' in 'ai/djl/pytorch/engine/PtGradientCollector')}
+  0x000000011ea7eae4: 086d 9ed2 | 884c a7f2 | 2800 c0f2 | e807 00f9 | 0800 8092 | e803 00f9 
+
+  0x000000011ea7eafc: ; ImmutableOopMap {rfp=Oop c_rarg2=Oop [128]=Oop }
+                      ;*synchronization entry
+                      ; - ai.djl.pytorch.engine.PtGradientCollector::backward@-1 (line 51)
+                      ;   {runtime_call C1 Runtime counter_overflow_blob}
+  0x000000011ea7eafc: 91c4 c395 | 3afd ff17 
+
+  0x000000011ea7eb04: ; ImmutableOopMap {rfp=Oop c_rarg2=Oop [128]=Oop }
+                      ;*invokeinterface getManager {reexecute=0 rethrow=0 return_oop=0}
+                      ; - ai.djl.pytorch.engine.PtGradientCollector::backward@1 (line 52)
+                      ;   {runtime_call C1 Runtime throw_incompatible_class_change_error_blob}
+  0x000000011ea7eb04: ffbe c395 
+
+  0x000000011ea7eb08: ; ImmutableOopMap {rfp=Oop c_rarg2=Oop [128]=Oop }
+                      ;*invokeinterface getManager {reexecute=0 rethrow=0 return_oop=0}
+                      ; - ai.djl.pytorch.engine.PtGradientCollector::backward@1 (line 52)
+                      ;   {runtime_call C1 Runtime throw_null_pointer_exception_blob}
+  0x000000011ea7eb08: ceb7 c395 
+
+  0x000000011ea7eb0c: ;   {metadata({method} {0x000000013a60b500} 'getManager' '()Lai/djl/ndarray/NDManager;' in 'ai/djl/pytorch/engine/PtNDArray')}
+  0x000000011ea7eb0c: 08a0 96d2 | 084c a7f2 | 2800 c0f2 | e807 00f9 | 0800 8092 | e803 00f9 
+
+  0x000000011ea7eb24: ; ImmutableOopMap {rfp=Oop c_rarg2=Oop [128]=Oop }
+                      ;*synchronization entry
+                      ; - ai.djl.pytorch.engine.PtNDArray::getManager@-1 (line 39)
+                      ; - ai.djl.pytorch.engine.PtGradientCollector::backward@1 (line 52)
+        
