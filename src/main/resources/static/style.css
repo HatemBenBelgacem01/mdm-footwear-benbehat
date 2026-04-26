@@ -1,219 +1,116 @@
-/* Main Container Styling */
+:root {
+    --primary: #10b981;
+    --primary-dark: #059669;
+    --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    --card-bg: rgba(255, 255, 255, 0.95);
+}
+
 body {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background: var(--bg-gradient);
     min-height: 100vh;
-    padding-top: 40px;
-    padding-bottom: 40px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', sans-serif;
+    color: #1e293b;
 }
 
-.container-fluid {
-    background: white;
-    border-radius: 15px;
-    padding: 40px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    max-width: 800px;
+.main-wrapper {
+    padding: 60px 20px;
+}
+
+.text-gradient {
+    background: linear-gradient(to right, var(--primary), var(--primary-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Upload Drop Zone */
+.drop-zone {
+    max-width: 600px;
     margin: 0 auto;
-}
-
-/* Header Styling */
-h1 {
-    color: #10b981;
-    font-weight: 700;
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-h5 {
-    color: #10b981;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-
-.subtitle {
-    color: #999;
-    font-size: 14px;
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-/* Form Styling */
-.form-group label {
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 15px;
-}
-
-.form-control-file {
-    border: 2px dashed #10b981;
-    border-radius: 8px;
-    padding: 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.form-control-file:hover {
-    border-color: #059669;
-    background-color: #f0fdf4;
-}
-
-.form-control-file:focus {
-    border-color: #059669;
-    box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.25);
-}
-
-/* Result Container */
-#answerPart {
-    margin-top: 40px;
-    padding-top: 30px;
-    border-top: 2px solid #eee;
-}
-
-#answerPart.hidden {
-    display: none;
-}
-
-/* Results Container - Two Column Layout */
-.results-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    align-items: start;
-}
-
-/* Image Preview */
-.preview-section {
-    text-align: center;
-}
-
-#preview {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-}
-
-/* Classification Results */
-.result-section {
-    margin-top: 30px;
-}
-
-.classification-item {
+    height: 200px;
+    padding: 25px;
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
-    padding: 12px 15px;
-    background-color: #f0fdf4;
-    border-radius: 8px;
-    border-left: 4px solid #10b981;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    background: var(--card-bg);
+    border: 2px dashed #cbd5e1;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    position: relative;
 }
 
-.classification-label {
-    font-weight: 600;
-    color: #333;
-    flex: 1;
-    margin-right: 15px;
+.drop-zone:hover, .drop-zone.drag-over {
+    border-color: var(--primary);
+    background: #f0fdf4;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.1);
 }
 
-.classification-bar {
-    flex: 2;
-    margin: 0 15px;
+.drop-zone-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    left: 0;
+    top: 0;
+}
+
+.upload-icon {
+    color: var(--primary);
+}
+
+/* Results Card */
+.results-card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.top-result-badge {
+    background: #ecfdf5;
+    border: 1px solid #d1fae5;
+    padding: 20px;
+    border-radius: 16px;
+    color: var(--primary-dark);
+}
+
+/* Progress Bars Customization */
+.classification-item {
+    margin-bottom: 1.5rem;
 }
 
 .progress {
-    height: 24px;
-    border-radius: 12px;
-    background-color: #e9ecef;
+    height: 8px;
+    background-color: #f1f5f9;
+    border-radius: 10px;
+    overflow: visible;
 }
 
 .progress-bar {
-    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
-    border-radius: 12px;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border-radius: 10px;
+    transition: width 1s ease-in-out;
+}
+
+.label-container {
     display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding-right: 8px;
-    font-size: 12px;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
     font-weight: 600;
-    color: white;
 }
 
-.classification-percentage {
-    min-width: 50px;
-    text-align: right;
-    color: #10b981;
-    font-weight: 700;
-}
-
-.top-result {
-    background-color: #dcfce7;
-    border-left-color: #10b981;
-    margin-bottom: 20px;
-    padding: 15px;
-}
-
-.top-result .classification-label {
-    color: #10b981;
-    font-size: 18px;
-}
-
-.top-result .classification-percentage {
-    color: #10b981;
-    font-size: 18px;
-}
-
-/* Loading State */
-.loading {
-    text-align: center;
-    padding: 20px;
-    color: #10b981;
-}
-
-.spinner-border {
-    color: #10b981;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .container-fluid {
-        padding: 20px;
-    }
-
-    h1 {
-        font-size: 28px;
-    }
-
-    /* Stack columns on mobile */
-    .results-container {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
-
-    .preview-section {
-        text-align: center;
-    }
-
-    .results-section {
-        text-align: center;
-    }
-
-    .classification-item {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .classification-label {
-        margin-bottom: 10px;
-        margin-right: 0;
-    }
-
-    .classification-bar {
-        width: 100%;
-        margin: 10px 0;
-    }
-
-    .classification-percentage {
-        margin-top: 8px;
-        text-align: left;
-    }
+#preview {
+    width: 100%;
+    object-fit: cover;
+    max-height: 400px;
 }

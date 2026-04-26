@@ -1,151 +1,102 @@
+// Drag and Drop Initialisierung
+const dropZone = document.getElementById('drop-zone');
+
+if (dropZone) {
+    ['dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, e => {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    });
+
+    dropZone.addEventListener('dragover', () => dropZone.classList.add('drag-over'));
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+    dropZone.addEventListener('drop', (e) => {
+        dropZone.classList.remove('drag-over');
+        const files = e.dataTransfer.files;
+        checkFiles(files);
+    });
+}
+
 function checkFiles(files) {
-    console.log(files);
-
-    if (files.length != 1) {
-        alert("Please upload exactly one file.")
+    if (files.length !== 1) {
+        alert("Bitte genau ein Bild hochladen.");
         return;
     }
 
-    const fileSize = files[0].size / 1024 / 1024; // in MiB
+    const fileSize = files[0].size / 1024 / 1024;
     if (fileSize > 10) {
-        alert("File too large (max. 10MB)");
+        alert("Datei zu groß (max. 10MB)");
         return;
     }
 
-    // Show the answer part
-    document.getElementById("answerPart").classList.remove("hidden");
-    
-    const file = files[0];
+    // UI-Elemente vorbereiten
+    const answerPart = document.getElementById("answerPart");
+    const loadingPart = document.getElementById("loadingPart");
+    const resultsPart = document.getElementById("resultsPart");
+    const preview = document.getElementById("preview");
 
-    // Preview
-    if (file) {
-        document.getElementById("preview").src = URL.createObjectURL(files[0])
-    }
+    answerPart.classList.remove("d-none");
+    loadingPart.classList.remove("d-none");
+    resultsPart.classList.add("d-none");
 
-    // Show loading indicator
-    document.getElementById("loadingPart").style.display = "block";
-    document.getElementById("resultsPart").style.display = "none";
+    // Vorschau anzeigen
+    preview.src = URL.createObjectURL(files[0]);
 
-    // Upload
+    // Upload via API
     const formData = new FormData();
-    for (const name in files) {
-        formData.append("image", files[name]);
-    }
+    formData.append("image", files[0]);
 
     fetch('/analyze', {
         method: 'POST',
-        headers: {
-        },
         body: formData
-    }).then(
-        response => {
-            console.log("Response:", response)
-            response.text().then(function (text) {
-                console.log("Raw response text:", text);
-                try {
-                    // Parse JSON response
-                    const jsonData = JSON.parse(text);
-                    console.log("Parsed JSON:", jsonData);
-                    
-                    // Hide loading indicator
-                    document.getElementById("loadingPart").style.display = "none";
-                    document.getElementById("resultsPart").style.display = "block";
-                    
-                    // Display results
-                    displayResults(jsonData);
-                } catch (e) {
-                    console.error("Error parsing JSON:", e);
-                    console.error("Response text was:", text);
-                    document.getElementById("loadingPart").style.display = "none";
-                    alert("Error processing the response: " + e.message);
-                }
-            });
-
-        }
-    ).then(
-        success => console.log(success)
-    ).catch(
-        error => {
-            console.log("Fetch error:", error);
-            document.getElementById("loadingPart").style.display = "none";
-            alert("Error uploading file: " + error);
-        }
-    );
+    })
+    .then(response => response.json())
+    .then(jsonData => {
+        loadingPart.classList.add("d-none");
+        resultsPart.classList.remove("d-none");
+        displayResults(jsonData);
+    })
+    .catch(error => {
+        console.error("Fehler:", error);
+        loadingPart.classList.add("d-none");
+        alert("Fehler beim Verarbeiten des Bildes.");
+    });
 }
 
 function displayResults(jsonData) {
-    console.log("displayResults called with:", jsonData);
-    
     let classifications = [];
     
-    // DJL Classifications format: {"class": "ClassName", "probability": 0.95}
-    // or array format: [{"className": "Boots", "probability": 0.95}, ...]
-    
+    // Datenextraktion (Unterstützt verschiedene Formate)
     if (Array.isArray(jsonData)) {
-        // If it's an array
-        classifications = jsonData.map(item => ({
-            className: item.className || item.class || item.name,
-            probability: parseFloat(item.probability || 0)
-        }));
-    } else if (jsonData.classes && Array.isArray(jsonData.classes)) {
-        // If it has a "classes" array property
-        classifications = jsonData.classes.map(item => ({
-            className: item.className || item.class || item.name,
-            probability: parseFloat(item.probability || 0)
-        }));
-    } else if (typeof jsonData === 'object') {
-        // If it's a direct object with class names as keys
-        for (const [key, value] of Object.entries(jsonData)) {
-            if (key !== 'classes' && typeof value === 'number') {
-                classifications.push({
-                    className: key,
-                    probability: parseFloat(value)
-                });
-            }
-        }
+        classifications = jsonData;
+    } else if (jsonData.classes) {
+        classifications = jsonData.classes;
     }
-    
-    console.log("Extracted classifications:", classifications);
-    
-    // Sort by probability descending
+
+    // Sortierung nach Wahrscheinlichkeit
     classifications.sort((a, b) => b.probability - a.probability);
-    
-    // Display top result
+
     if (classifications.length > 0) {
-        const topResult = classifications[0];
-        const topLabel = topResult.className || "Unknown";
-        const topProb = (parseFloat(topResult.probability) * 100).toFixed(1);
-        
-        console.log("Top result:", topLabel, topProb + "%");
-        
-        document.getElementById("topLabel").textContent = topLabel;
-        document.getElementById("topPercentage").textContent = topProb + "%";
-        document.getElementById("topResult").style.display = "flex";
+        const top = classifications[0];
+        document.getElementById("topLabel").textContent = top.className || top.class;
+        document.getElementById("topPercentage").textContent = (top.probability * 100).toFixed(1) + "%";
     }
-    
-    // Display all classifications
-    let classificationHTML = "";
-    classifications.forEach((item, index) => {
-        const label = item.className || "Unknown";
-        const probability = parseFloat(item.probability);
-        const percentage = (probability * 100).toFixed(1);
-        
-        // Skip the top result from the list
-        if (index === 0) return;
-        
-        classificationHTML += `
+
+    // Restliche Ergebnisse rendern
+    const listContainer = document.getElementById("classificationList");
+    listContainer.innerHTML = classifications.slice(1, 5).map(item => {
+        const prob = (item.probability * 100).toFixed(1);
+        return `
             <div class="classification-item">
-                <div class="classification-label">${label}</div>
-                <div class="classification-bar">
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: ${percentage}%"></div>
-                    </div>
+                <div class="label-container">
+                    <span>${item.className || item.class}</span>
+                    <span class="text-muted">${prob}%</span>
                 </div>
-                <div class="classification-percentage">${percentage}%</div>
+                <div class="progress">
+                    <div class="progress-bar" style="width: ${prob}%"></div>
+                </div>
             </div>
         `;
-    });
-    
-    document.getElementById("classificationList").innerHTML = classificationHTML;
-    console.log("Results displayed");
+    }).join('');
 }
