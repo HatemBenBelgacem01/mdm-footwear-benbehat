@@ -1,19 +1,28 @@
-# Usage
-# docker build -t mosazhaw/djl-footwear-classification .
-# docker run --name djl-footwear-classification -p 8080:8080 -d mosazhaw/djl-footwear-classification
-
+# 1. Basis-Image auswählen (Passend zu deinem bisherigen Versuch)
 FROM eclipse-temurin:25-jdk-noble
 
-# Copy Files
+# 2. Arbeitsverzeichnis im Container erstellen
 WORKDIR /usr/src/app
-COPY models models
-COPY src src
-COPY .mvn .mvn
-COPY pom.xml mvnw ./
 
-# Install
+# 3. Projektdateien kopieren
+# Zuerst nur die Dateien für die Abhängigkeiten (beschleunigt spätere Builds)
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+
+# 4. WICHTIG: Ausführungsrechte für den Maven-Wrapper setzen
+RUN chmod +x ./mvnw
+
+# 5. Den Rest des Quellcodes und die Modelle kopieren
+COPY src src
+COPY models models
+
+# 6. Anwendung bauen (Tests werden übersprungen, um Zeit zu sparen)
 RUN ./mvnw -Dmaven.test.skip=true package
 
-# Docker Run Command
+# 7. Port freigeben (Standard für Spring Boot)
 EXPOSE 8080
-CMD ["java","-jar","/usr/src/app/target/playground-0.0.1-SNAPSHOT.jar"]
+
+# 8. Startbefehl: Die erzeugte JAR-Datei ausführen
+# Hinweis: Falls dein Projektname in der pom.xml anders ist, 
+# stelle sicher, dass der Dateiname unter target/*.jar übereinstimmt.
+CMD ["java", "-jar", "target/footwear-0.0.1-SNAPSHOT.jar"]

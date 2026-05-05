@@ -8,9 +8,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ch.zhaw.deeplearningjava</groupId>
-	<artifactId>playground</artifactId>
+	<artifactId>footwear</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>playground</name>
+	<name>footwear</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>25</java.version>
