@@ -12,16 +12,16 @@
  */
 package ch.zhaw.deeplearningjava.footwear;
 
-import ai.djl.Model;
-import ai.djl.basicmodelzoo.cv.classification.ResNetV1;
-import ai.djl.ndarray.types.Shape;
-import ai.djl.nn.Block;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+
+import ai.djl.Model;
+import ai.djl.basicmodelzoo.cv.classification.ResNetV1;
+import ai.djl.ndarray.types.Shape;
+import ai.djl.nn.Block;
 
 /** A helper class loads and saves model. */
 public final class Models {
