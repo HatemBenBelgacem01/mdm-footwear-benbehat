@@ -2,7 +2,7 @@ name: CI/CD Footwear Classification
 
 on:
   push:
-    branches: [ "main" ] # Führt die Action aus, wenn du in den main-branch pushst
+    branches: [ "master" ] # Führt die Action aus, wenn du in den main-branch pushst
 
 jobs:
   build-and-push:
