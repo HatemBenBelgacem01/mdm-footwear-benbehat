@@ -1,28 +1,42 @@
-# 1. Basis-Image auswählen (Passend zu deinem bisherigen Versuch)
-FROM eclipse-temurin:25-jdk-noble
+# ==========================================
+# Stage 1: Builder (Kompilieren der Anwendung)
+# ==========================================
+FROM eclipse-temurin:25-jdk-noble AS builder
 
-# 2. Arbeitsverzeichnis im Container erstellen
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# 3. Projektdateien kopieren
-# Zuerst nur die Dateien für die Abhängigkeiten (beschleunigt spätere Builds)
+# 1. Maven-Wrapper und Konfiguration kopieren
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
-
-# 4. WICHTIG: Ausführungsrechte für den Maven-Wrapper setzen
 RUN chmod +x ./mvnw
 
-# 5. Den Rest des Quellcodes und die Modelle kopieren
-COPY src src
-COPY models models
+# 2. Abhängigkeiten offline herunterladen
+# Das cacht die Dependencies in einem eigenen Docker-Layer. 
+# Solange die pom.xml nicht geändert wird, geht dieser Schritt beim nächsten Build in Sekundenbruchteilen.
+RUN ./mvnw dependency:go-offline
 
-# 6. Anwendung bauen (Tests werden übersprungen, um Zeit zu sparen)
+# 3. Quellcode kopieren (erst nach den Abhängigkeiten!)
+COPY src ./src
+
+# 4. Anwendung sauber kompilieren ("clean" löscht alte Artefakte)
 RUN ./mvnw clean package -Dmaven.test.skip=true
 
-# 7. Port freigeben (Standard für Spring Boot)
+# ==========================================
+# Stage 2: Runtime (Ausführen der Anwendung)
+# ==========================================
+FROM eclipse-temurin:25-jdk-noble
+
+WORKDIR /app
+
+# 5. Modelle kopieren, da diese zur Laufzeit von der App benötigt werden
+COPY models ./models
+
+# 6. NUR die fertige JAR-Datei aus der "builder"-Stage kopieren.
+# Der restliche Quellcode und der riesige .m2-Ordner mit den Abhängigkeiten werden verworfen.
+COPY --from=builder /app/target/footwear-0.0.1-SNAPSHOT.jar app.jar
+
+# 7. Port freigeben
 EXPOSE 8080
 
-# 8. Startbefehl: Die erzeugte JAR-Datei ausführen
-# Hinweis: Falls dein Projektname in der pom.xml anders ist, 
-# stelle sicher, dass der Dateiname unter target/*.jar übereinstimmt.
-CMD ["java", "-jar", "target/footwear-0.0.1-SNAPSHOT.jar"]
+# 8. Anwendung starten
+CMD ["java", "-jar", "app.jar"]
