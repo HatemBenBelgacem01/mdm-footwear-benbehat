@@ -1,6 +1,6 @@
 // Drag and Drop Initialisierung
 const dropZone = document.getElementById('drop-zone');
-const MAX_HISTORY = 8;
+const MAX_HISTORY = 10;
 let analysisHistory = [];
 
 if (dropZone) {
@@ -34,7 +34,6 @@ function checkFiles(files) {
         return;
     }
 
-    // UI-Elemente vorbereiten
     const answerPart = document.getElementById("answerPart");
     const loadingPart = document.getElementById("loadingPart");
     const resultsPart = document.getElementById("resultsPart");
@@ -44,11 +43,9 @@ function checkFiles(files) {
     loadingPart.classList.remove("d-none");
     resultsPart.classList.add("d-none");
 
-    // Vorschau anzeigen und URL für Historie speichern
     const imageUrl = URL.createObjectURL(files[0]);
     preview.src = imageUrl;
 
-    // Upload via API
     const formData = new FormData();
     formData.append("image", files[0]);
 
@@ -103,7 +100,6 @@ function displayResults(jsonData, imageUrl) {
 
     classifications.sort((a, b) => b.probability - a.probability);
 
-    // Top-Ergebnis anzeigen
     let topName = "Unbekannt";
     let topProb = "0%";
     
@@ -115,7 +111,6 @@ function displayResults(jsonData, imageUrl) {
         document.getElementById("topPercentage").textContent = topProb;
     }
 
-    // Restliche Ergebnisse rendern
     const listContainer = document.getElementById("classificationList");
     let classificationHTML = "";
     
@@ -136,12 +131,19 @@ function displayResults(jsonData, imageUrl) {
     
     listContainer.innerHTML = classificationHTML;
 
-    // Historie aktualisieren
-    addToHistory(imageUrl, topName, topProb);
+    const timestamp = new Date().toLocaleString('de-CH', { 
+        day: '2-digit', 
+        month: '2-digit', 
+        year: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit' 
+    });
+    
+    addToHistory(imageUrl, topName, topProb, timestamp);
 }
 
-function addToHistory(imgSrc, label, probability) {
-    analysisHistory.unshift({ imgSrc, label, probability });
+function addToHistory(imgSrc, label, probability, timestamp) {
+    analysisHistory.unshift({ imgSrc, label, probability, timestamp });
 
     if (analysisHistory.length > MAX_HISTORY) {
         analysisHistory.pop();
@@ -152,23 +154,24 @@ function addToHistory(imgSrc, label, probability) {
 
 function renderHistory() {
     const historyContainer = document.getElementById('historyContainer');
-    const historyGrid = document.getElementById('historyGrid');
+    const historyTableBody = document.getElementById('historyTableBody');
 
     if (analysisHistory.length > 0) {
         historyContainer.classList.remove('d-none');
     }
 
-    historyGrid.innerHTML = analysisHistory.map(item => `
-        <div class="col-6 col-md-4 col-lg-3">
-            <div class="history-card">
-                <div class="history-img-wrapper">
-                    <img src="${item.imgSrc}" alt="${item.label}" class="history-img">
-                </div>
-                <div class="history-info">
-                    <div class="history-label">${item.label}</div>
-                    <span class="badge rounded-pill bg-success" style="font-size: 0.75rem;">${item.probability}</span>
-                </div>
-            </div>
-        </div>
+    historyTableBody.innerHTML = analysisHistory.map(item => `
+        <tr>
+            <td>
+                <img src="${item.imgSrc}" alt="${item.label}" class="rounded shadow-sm" style="width: 60px; height: 60px; object-fit: cover;">
+            </td>
+            <td class="text-muted small">${item.timestamp}</td>
+            <td class="fw-bold text-dark">${item.label}</td>
+            <td>
+                <span class="badge rounded-pill bg-success-subtle text-success border border-success-subtle">
+                    ${item.probability}
+                </span>
+            </td>
+        </tr>
     `).join('');
 }

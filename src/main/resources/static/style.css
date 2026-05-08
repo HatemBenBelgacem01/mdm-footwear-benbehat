@@ -83,7 +83,7 @@ body {
     color: var(--primary-dark);
 }
 
-/* Progress Bars Customization */
+/* Progress Bars */
 .classification-item {
     margin-bottom: 1.5rem;
 }
@@ -113,49 +113,36 @@ body {
     width: 100%;
     object-fit: cover;
     max-height: 400px;
+    border-radius: 16px;
 }
 
-/* Historie Styles */
+/* Historie List Styles */
 .history-section {
     animation: slideUp 0.6s ease-out;
 }
 
-.history-card {
-    background: var(--card-bg);
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    height: 100%;
+.table {
+    margin-bottom: 0;
 }
 
-.history-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(16, 185, 129, 0.1);
+.table thead th {
+    border-top: none;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    padding: 15px;
 }
 
-.history-img-wrapper {
-    height: 140px;
-    background: #f1f5f9;
+.table tbody td {
+    padding: 15px;
+    border-bottom: 1px solid #f1f5f9;
 }
 
-.history-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.bg-success-subtle {
+    background-color: #d1fae5 !important;
 }
 
-.history-info {
-    padding: 12px;
-    text-align: center;
-}
-
-.history-label {
-    font-size: 0.85rem;
-    font-weight: 700;
-    margin-bottom: 4px;
-    color: #1e293b;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.text-success {
+    color: #059669 !important;
 }
