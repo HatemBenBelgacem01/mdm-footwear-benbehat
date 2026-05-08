@@ -17,7 +17,7 @@ COPY src src
 COPY models models
 
 # 6. Anwendung bauen (Tests werden übersprungen, um Zeit zu sparen)
-RUN ./mvnw -Dmaven.test.skip=true package
+RUN ./mvnw clean package -Dmaven.test.skip=true
 
 # 7. Port freigeben (Standard für Spring Boot)
 EXPOSE 8080
