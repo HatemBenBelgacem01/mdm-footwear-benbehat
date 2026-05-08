@@ -14,7 +14,7 @@ public class ClassificationController {
 
     @GetMapping("/ping")
     public String ping() {
-        return "Classification app is up and running!";
+        return "Classification app is up and running!!!!";
     }
 
     @PostMapping(path = "/analyze")
