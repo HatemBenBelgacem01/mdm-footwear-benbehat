@@ -1,5 +1,7 @@
 // Drag and Drop Initialisierung
 const dropZone = document.getElementById('drop-zone');
+const MAX_HISTORY = 8;
+let analysisHistory = [];
 
 if (dropZone) {
     ['dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -42,8 +44,9 @@ function checkFiles(files) {
     loadingPart.classList.remove("d-none");
     resultsPart.classList.add("d-none");
 
-    // Vorschau anzeigen
-    preview.src = URL.createObjectURL(files[0]);
+    // Vorschau anzeigen und URL für Historie speichern
+    const imageUrl = URL.createObjectURL(files[0]);
+    preview.src = imageUrl;
 
     // Upload via API
     const formData = new FormData();
@@ -53,18 +56,16 @@ function checkFiles(files) {
         method: 'POST',
         body: formData
     })
-    .then(response => response.text()) // Zuerst als Text lesen (robuster)
+    .then(response => response.text())
     .then(text => {
         try {
             const jsonData = JSON.parse(text);
-            
             loadingPart.classList.add("d-none");
             resultsPart.classList.remove("d-none");
             
-            displayResults(jsonData);
+            displayResults(jsonData, imageUrl);
         } catch (e) {
             console.error("Fehler beim Parsen der JSON:", e);
-            console.error("Server-Antwort war:", text);
             loadingPart.classList.add("d-none");
             alert("Fehler beim Verarbeiten der Antwort vom Server.");
         }
@@ -76,10 +77,9 @@ function checkFiles(files) {
     });
 }
 
-function displayResults(jsonData) {
+function displayResults(jsonData, imageUrl) {
     let classifications = [];
     
-    // Originale, robuste Extraktion der DJL Classifications
     if (Array.isArray(jsonData)) {
         classifications = jsonData.map(item => ({
             className: item.className || item.class || item.name,
@@ -101,21 +101,24 @@ function displayResults(jsonData) {
         }
     }
 
-    // Sortierung nach Wahrscheinlichkeit (höchste zuerst)
     classifications.sort((a, b) => b.probability - a.probability);
 
     // Top-Ergebnis anzeigen
+    let topName = "Unbekannt";
+    let topProb = "0%";
+    
     if (classifications.length > 0) {
         const top = classifications[0];
-        document.getElementById("topLabel").textContent = top.className || "Unbekannt";
-        document.getElementById("topPercentage").textContent = (top.probability * 100).toFixed(1) + "%";
+        topName = top.className || "Unbekannt";
+        topProb = (top.probability * 100).toFixed(1) + "%";
+        document.getElementById("topLabel").textContent = topName;
+        document.getElementById("topPercentage").textContent = topProb;
     }
 
     // Restliche Ergebnisse rendern
     const listContainer = document.getElementById("classificationList");
     let classificationHTML = "";
     
-    // Nur die Ergebnisse auf den Plätzen 2 bis 5 anzeigen (slice 1 bis 5)
     classifications.slice(1, 5).forEach(item => {
         const prob = (item.probability * 100).toFixed(1);
         classificationHTML += `
@@ -132,4 +135,40 @@ function displayResults(jsonData) {
     });
     
     listContainer.innerHTML = classificationHTML;
+
+    // Historie aktualisieren
+    addToHistory(imageUrl, topName, topProb);
+}
+
+function addToHistory(imgSrc, label, probability) {
+    analysisHistory.unshift({ imgSrc, label, probability });
+
+    if (analysisHistory.length > MAX_HISTORY) {
+        analysisHistory.pop();
+    }
+
+    renderHistory();
+}
+
+function renderHistory() {
+    const historyContainer = document.getElementById('historyContainer');
+    const historyGrid = document.getElementById('historyGrid');
+
+    if (analysisHistory.length > 0) {
+        historyContainer.classList.remove('d-none');
+    }
+
+    historyGrid.innerHTML = analysisHistory.map(item => `
+        <div class="col-6 col-md-4 col-lg-3">
+            <div class="history-card">
+                <div class="history-img-wrapper">
+                    <img src="${item.imgSrc}" alt="${item.label}" class="history-img">
+                </div>
+                <div class="history-info">
+                    <div class="history-label">${item.label}</div>
+                    <span class="badge rounded-pill bg-success" style="font-size: 0.75rem;">${item.probability}</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
 }
