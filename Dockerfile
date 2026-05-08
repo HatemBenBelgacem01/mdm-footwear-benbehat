@@ -1,7 +1,7 @@
 # ==========================================
 # Stage 1: Builder (Kompilieren der Anwendung)
 # ==========================================
-FROM eclipse-temurin:21-jdk-noble AS builder
+FROM eclipse-temurin:25-jdk-noble AS builder
 
 WORKDIR /app
 
@@ -24,7 +24,7 @@ RUN ./mvnw clean package -Dmaven.test.skip=true
 # ==========================================
 # Stage 2: Runtime (Ausführen der Anwendung)
 # ==========================================
-FROM eclipse-temurin:21-jdk-noble
+FROM eclipse-temurin:25-jdk-noble
 
 WORKDIR /app
 
